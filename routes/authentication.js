@@ -117,6 +117,11 @@ module.exports = (router) => {
       if (!user) return res.json({ success: false, message: "User Not Found" });
       if (user.status === "pending")
         return res.json({ success: false, message: "Account Still Pending" });
+      if (user.status === "inactive")
+        return res.json({
+          success: false,
+          message: "Your account is inactive",
+        });
       if (await comparePassword(req.body.password, user.password)) {
         //remove _id andpassword from the entries
         let newUser = user.toObject();
