@@ -13,7 +13,7 @@ interface CardSettings {
   title: string;
   iconClass: string;
   type: string;
-  on: boolean;
+  on: string;
 }
 
 @Component({
@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
   //   title: "Users",
   //   iconClass: "nb-person",
   //   type: "primary",
-  //   counts: 0,
+  //   on: true,
   // };
   // rollerShadesCard: CardSettings = {
   //   title: "Roller Shades",
@@ -95,7 +95,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllUsers();
-    this.getAllCustomer();
+    // this.getAllCustomer();
   }
   private updateTime() {
     setInterval(() => {
@@ -110,13 +110,6 @@ export class DashboardComponent implements OnInit {
     this.minutes = this.leftPadZero(time.getMinutes());
     this.seconds = this.leftPadZero(time.getSeconds());
     this.PmAm = parseInt(this.PmAmTime);
-
-    this.themeService
-      .getJsTheme()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((theme) => {
-        this.statusCards = this.statusCardsByThemes[theme.name];
-      });
   }
 
   private leftPadZero(value: number) {
@@ -130,6 +123,15 @@ export class DashboardComponent implements OnInit {
       .subscribe((data: any) => {
         this.userData = data.user.length;
         this.setIconData(data.user.length);
+
+        this.themeService
+          .getJsTheme()
+          .pipe(takeWhile(() => this.alive))
+          .subscribe((theme) => {
+            console.log(theme);
+            this.statusCards = this.statusCardsByThemes[theme.name];
+            console.log(this.statusCards);
+          });
       });
   }
 
@@ -138,14 +140,14 @@ export class DashboardComponent implements OnInit {
       title: `Users ${count}`,
       iconClass: "nb-person",
       type: "primary",
-      on: false,
+      on: "/admin/users",
     };
 
     this.rollerShadesCard = {
       title: "Roller Shades",
       iconClass: "nb-roller-shades",
       type: "success",
-      on: false,
+      on: "",
     };
 
     this.commonStatusCardsSet.push(this.lightCard);
@@ -175,17 +177,17 @@ export class DashboardComponent implements OnInit {
       dark: this.commonStatusCardsSet,
     };
   }
-  getAllCustomer() {
-    this.customer
-      .getAllCustomers()
-      .pipe(takeUntil(this.getSubscription))
-      .subscribe((data: any) => {
-        console.log("getAllCustomer");
-        console.log(data);
+  // getAllCustomer() {
+  //   this.customer
+  //     .getAllCustomers()
+  //     .pipe(takeUntil(this.getSubscription))
+  //     .subscribe((data: any) => {
+  //       console.log("getAllCustomer");
+  //       console.log(data);
 
-        this.customerData = data.customer.length;
-      });
-  }
+  //       this.customerData = data.customer.length;
+  //     });
+  // }
 
   ngOnDestroy() {
     this.getSubscription.unsubscribe();

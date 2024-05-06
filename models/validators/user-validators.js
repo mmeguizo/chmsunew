@@ -26,10 +26,8 @@ let emailLengthChecker = (email) => {
 
 let validEmailChecker = (email) => {
   if (!email) {
-    console.log("no email");
     return false;
   } else {
-    console.log("email: " + email);
     const regExp = new RegExp(/^([^\s@]+)@chmsu\.edu\.ph$/);
     console.log(regExp.test(email));
     return regExp.test(email);

@@ -78,43 +78,19 @@ export class RegisterModalComponent implements OnInit {
     this.activeModal.close();
   }
 
-  // getUser(id) {
-  //   this.user
-  //     .getRoute(this.userData.endpoint, this.userData.apiName, { id: id })
-  //     .pipe(takeUntil(this.getSubscription))
-  //     .subscribe((data: any) => {
-  //       this.selected = data.user.role;
-  //       this.form = this.formBuilder.group({
-  //         username: [data.user.username, [Validators.required]],
-  //         email: [data.user.email, [Validators.required]],
-  //         role: [data.user.role, [Validators.required]],
-  //         password: ["", [Validators.required]],
-  //         confirm: ["", [Validators.required]],
-  //       });
-  //       // data.success ? [this.passEntry.emit(data) , this.activeModal.close()] : this.passEntry.emit(data)
-  //     });
-  // }
-
   executeAction(form) {
-    this.form.value.id = this.userData.id;
-    this.form.role = "user";
-    console.log({ "this.form": this.form });
-    console.log({ form: form });
-
-    // this.user
-    //   .getRoute(
-    //     this.userData.endpoint2
-    //       ? this.userData.endpoint2
-    //       : this.userData.endpoint,
-    //     this.userData.apiName2 ? this.userData.apiName2 : this.userData.apiName,
-    //     this.form.value
-    //   )
-    //   .pipe(takeUntil(this.getSubscription))
-    //   .subscribe((data: any) => {
-    //     data.success
-    //       ? [this.passEntry.emit(data), this.activeModal.close()]
-    //       : this.passEntry.emit(data);
-    //   });
+    this.user
+      .getRoute("post", "register", this.form.value)
+      .pipe(takeUntil(this.getSubscription))
+      .subscribe((data: any) => {
+        console.log(data);
+        if (!data.success) {
+          this.auth.makeToast("danger", "Error", data.message);
+        } else {
+          this.passEntry.emit(data);
+          this.activeModal.close();
+        }
+      });
   }
 
   showPassword() {

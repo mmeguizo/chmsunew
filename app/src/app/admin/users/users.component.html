@@ -1,5 +1,3 @@
-
-
 <div class="row">
   <div class="col-sm-12">
     <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
@@ -7,17 +5,30 @@
         <div class="action-groups-header" style="float: left; clear: both">
           User Lists
         </div>
-        <nb-actions size="medium" style="float: right; font-size: 10px;">
-          <nb-action color="success" nbPopover="Add new user" nbPopoverTrigger="hint"
-            nbPopoverPlacement="bottom" (click)="addUser()">
-            <nb-icon id="addUser" icon="person-add-outline"></nb-icon></nb-action>
+        <nb-actions size="medium" style="float: right; font-size: 10px">
+          <nb-action
+            color="success"
+            nbPopover="Add new user"
+            nbPopoverTrigger="hint"
+            nbPopoverPlacement="bottom"
+            (click)="addUser()"
+          >
+            <nb-icon id="addUser" icon="person-add-outline"></nb-icon
+          ></nb-action>
         </nb-actions>
       </nb-card-header>
-      <nb-card-body  style="height: 200pxpx;min-height: 580px;padding-bottom: 31px;">
+      <nb-card-body
+        style="height: 200pxpx; min-height: 580px; padding-bottom: 31px"
+      >
         <div class="row">
           <div class="col-sm-12">
             <div class="clear"></div>
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table
+              datatable
+              [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger"
+              class="row-border hover"
+            >
               <thead>
                 <tr>
                   <th>ID</th>
@@ -29,31 +40,50 @@
                 </tr>
               </thead>
               <tbody *ngIf="data?.length != 0">
-                <tr *ngFor="let person of data;let i = index">
+                <tr *ngFor="let person of data; let i = index">
                   <td>{{ i + 1 }}</td>
-                  <td>{{ person.username | titlecase  }}</td>
-                  <td>{{ person.email  }}</td>
+                  <td>{{ person.username | titlecase }}</td>
+                  <td>{{ person.email }}</td>
                   <td>{{ person.role | titlecase }}</td>
                   <td scope="col">
-                    <span class="pointer" (click)="changeStatus(person)"
-                      [ngClass]="{'active': person.status == 'active',  'inactive': person.status == 'inactive' }">{{ person.status | titlecase}}</span>
+                    <span
+                      class="pointer"
+                      (click)="changeStatus(person)"
+                      [ngClass]="{
+                        active: person.status == 'active',
+                        inactive: person.status == 'inactive',
+                        low: person.status == 'pending'
+                      }"
+                      >{{ person.status | titlecase }}</span
+                    >
                   </td>
                   <td scope="col" id="options">
                     <span>
-                      <nb-action  nbPopover="Update User" nbPopoverTrigger="hint"
-                      nbPopoverPlacement="bottom" (click)="updateUser(person.id)"><nb-icon  id="updateUser" icon="edit-2" ></nb-icon></nb-action>
+                      <nb-action
+                        nbPopover="Update User"
+                        nbPopoverTrigger="hint"
+                        nbPopoverPlacement="bottom"
+                        (click)="updateUser(person.id)"
+                        ><nb-icon id="updateUser" icon="edit-2"></nb-icon
+                      ></nb-action>
                     </span>
-                    &nbsp;
-                    &nbsp;
+                    &nbsp; &nbsp;
                     <span>
-                      <nb-action   nbPopover="Delete User" nbPopoverTrigger="hint"
-                      nbPopoverPlacement="bottom" (click)="deleteUser(person)"><nb-icon id="deleteUser" icon="trash-2-outline"></nb-icon></nb-action>
+                      <nb-action
+                        nbPopover="Delete User"
+                        nbPopoverTrigger="hint"
+                        nbPopoverPlacement="bottom"
+                        (click)="deleteUser(person)"
+                        ><nb-icon
+                          id="deleteUser"
+                          icon="trash-2-outline"
+                        ></nb-icon
+                      ></nb-action>
                     </span>
                   </td>
                 </tr>
               </tbody>
             </table>
-
           </div>
         </div>
       </nb-card-body>
@@ -63,4 +93,3 @@
 <!-- <i class="fas fa-user"></i>
 <nb-icon icon="edit-2" style="color: blue"></nb-icon>
 <i class="fa-solid fa-pen-to-square"></i>-->
-

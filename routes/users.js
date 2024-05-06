@@ -177,7 +177,13 @@ module.exports = (router) => {
         id: data.id,
       },
       (err, user) => {
-        let statusData = user.status === "inactive" ? "active" : "inactive";
+        let statusData =
+          user.status === "pending"
+            ? "active"
+            : user.status === "active"
+            ? "inactive"
+            : "active";
+
         if (err) throw err;
         User.findOneAndUpdate(
           { id: data.id },
