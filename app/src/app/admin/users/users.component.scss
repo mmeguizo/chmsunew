@@ -1,0 +1,167 @@
+span.input-group-text {
+  background-color: #00d68f;
+  color: #fff;
+}
+.options {
+  color: rgb(0, 128, 192);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 11px;
+  text-align: right;
+}
+
+.options:hover {
+  color: rgb(0, 128, 255);
+  border-bottom: 2px dotted rgb(0, 128, 192);
+}
+
+::ng-deep .nb-theme-dark nb-card {
+  label {
+    color: white;
+  }
+  .dataTables_wrapper .dataTables_length select {
+    color: white;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: #fff !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #f3f3f3 !important;
+  }
+}
+
+::ng-deep .nb-theme-cosmic nb-card {
+  label {
+    color: white;
+  }
+  .dataTables_wrapper .dataTables_length select {
+    color: white;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: #fff !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #f3f3f3 !important;
+  }
+}
+
+i#button-alignment {
+  font-size: 20px !important;
+  cursor: pointer;
+  color: #3366ff;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+#addUser {
+  cursor: pointer;
+  color: #00d68f;
+  width: 80%;
+}
+
+#options {
+  display: flex;
+}
+
+#updateUser {
+  cursor: pointer;
+  color: #ffaa00;
+}
+#deleteUser {
+  cursor: pointer;
+  color: #ff3d71;
+}
+
+.zero {
+  background: #7fffd4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+.critical {
+  background: #ff0000c4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+.inactive {
+  background: #ff0000c4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+.low {
+  background: #ff8d00c4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+.medium {
+  background: #0066ffc4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+.good {
+  background: #007925c4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+.active {
+  background: #007925c4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+.overstocks {
+  background: #79004ec4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+.tooMuchoverstocks {
+  background: #79004ec4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+
+span.input-group-text {
+  background-color: #00d68f;
+  color: #fff;
+}
+
+.options {
+  color: rgb(0, 128, 192);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 11px;
+  text-align: right;
+}
+
+.options:hover {
+  color: rgb(0, 128, 255);
+  border-bottom: 2px dotted rgb(0, 128, 192);
+}
+
+i#button-alignment {
+  font-size: 20px !important;
+  cursor: pointer;
+  color: #3366ff;
+}

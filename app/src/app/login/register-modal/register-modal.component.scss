@@ -1,0 +1,36 @@
+::ng-deep .cdk-overlay-container {
+  z-index: 9999999 !important;
+}
+
+.critical {
+  display: none;
+}
+
+.password-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 47%;
+  left: 82%;
+}
+
+::ng-deep .nb-theme-dark nb-card {
+  margin-bottom: 0px !important;
+
+  .eva eva-eye-off-outline {
+    color: #222b45;
+  }
+
+  .password-icon {
+    color: #222b45;
+  }
+}
+
+::ng-deep .nb-theme-cosmic nb-card {
+  margin-bottom: 0px !important;
+  .eva eva-eye-off-outline {
+    color: #222b45;
+  }
+  .password-icon {
+    color: #222b45;
+  }
+}

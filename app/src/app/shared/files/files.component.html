@@ -1,0 +1,55 @@
+
+
+<div class="row">
+  <div class="col-sm-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <nb-card-header>
+        <div class="action-groups-header" style="float: left; clear: both">
+          Files List
+        </div>
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <nb-actions size="medium" style="float: right; font-size: 10px;">
+          <nb-action color="success" nbPopover="Add new files" nbPopoverTrigger="hint"
+            nbPopoverPlacement="bottom" (click)="addFiles()">
+            <nb-icon id="addUser" icon="file-text-outline"></nb-icon></nb-action>
+        </nb-actions>
+      </nb-card-header>
+      <nb-card-body  style="height: 200pxpx;min-height: 580px;padding-bottom: 31px;">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="clear"></div>
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">File</th>
+                  <th scope="col">Options</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="data?.length != 0">
+                <tr *ngFor="let file of data;let i = index">
+
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td class="w-25">
+                    <span>
+                     <a [href]="this.auth.domain + '/images/files/'+file.source" target="_blank"><i class="fas fa-file display-4"></i></a> <strong> &nbsp; : {{ file.filetype | uppercase }}</strong>
+                    </span>
+                  </td>
+                  <td scope="col" id="options">
+                    <span>
+                      <nb-action   nbPopover="Delete User" nbPopoverTrigger="hint"
+                      nbPopoverPlacement="bottom" (click)="deleteCustomer({id : file.id, source : file.source })"><nb-icon id="deleteUser" class="active iconDelete" icon="trash-2-outline"></nb-icon></nb-action>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<!-- <div class="row">
+  <div class="col-sm-12 card">
+    <mat-card class="example-card">
+      <mat-card-title> ADMIN DASHBOARD</mat-card-title>
+      <mat-card-content>
+        <div class="clock">
+          <span class="date">{{ date | date : "EEE. MMM. d, yyyy" }} |</span>
+          &nbsp;🕐&nbsp;
+          <span class="hour">{{ hours }}:</span>
+          <span class="min">{{ minutes }}:</span>
+          <span class="second">{{ seconds }}</span>
+          &nbsp;
+          <span> {{ PmAm >= 12 && PmAm <= 24 ? "PM" : "AM" }} </span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> -->
+
+<!-- <div class="row">
+  <div class="col-sm-2 card">
+    <mat-card class="example-card">
+      <mat-card-title><i class="fas fa-user"></i> USERS</mat-card-title>
+      <mat-card-content>
+        <p>{{ userData }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  &nbsp;&nbsp;
+  <div class="col-sm-2 card">
+    <mat-card class="example-card">
+      <mat-card-title><i class="fas fa-users"></i> CUSTOMERS</mat-card-title>
+      <mat-card-content>
+        <p>{{customerData}}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> -->
+
+<div class="row">
+  <div class="col-xxxl-3 col-md-6" *ngFor="let statusCard of statusCards">
+    <ngx-status-card [title]="statusCard.title" [type]="statusCard.type">
+      <i [ngClass]="statusCard.iconClass"></i>
+    </ngx-status-card>
+  </div>
+</div>

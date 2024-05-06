@@ -1,0 +1,25 @@
+<div class="col-md-12">
+  <nb-card>
+<nb-card-header> Upload Files  <button class="close" aria-label="Close" (click)="closeModal()">
+  <span aria-hidden="true">&times;</span>
+</button> </nb-card-header>
+<nb-card-body>
+  <form  enctype="multipart/form-data">
+  <div class="row">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="inputFirstName" class="label">Attachment</label>
+          <div class="avatar-container">
+            <input type="file" name="file" class="d-none" multiple="multiple" id="file">
+            <button class="btn btn-primary browse-btn"  nbSpinnerStatus="primary" nbSpinnerSize="tiny" nbSpinnerMessage="" (click)="openFile($event, 'file')"> Choose Files</button>
+            <span> Files <strong> {{ theFileLength }} </strong></span>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+</nb-card-body>
+</nb-card>
+</div>

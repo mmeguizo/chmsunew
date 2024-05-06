@@ -1,0 +1,128 @@
+<nb-card>
+  <nb-card-header>
+    {{ action | titlecase }} User {{ updateUser ? updateUser : "" }}
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form" (submit)="executeAction(form)">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="inputFirstName" class="label">Username</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="inputFirstName"
+              [status]="
+                form?.get('username').touched &&
+                form.controls['username'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Username"
+              formControlName="username"
+            />
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="inputLastName" class="label">Email</label>
+            <input
+              type="email"
+              nbInput
+              fullWidth
+              id="inputLastName"
+              [status]="
+                form?.get('email').touched &&
+                form.controls['email'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Email"
+              formControlName="email"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12" [ngClass]="{ critical: updateUser }">
+          <div class="form-group">
+            <label for="inputEmail" class="label">Password</label>
+            <input
+              type="{{ showpassword ? 'text' : 'password' }}"
+              nbInput
+              fullWidth
+              id="inputEmail"
+              [status]="
+                form?.get('password').touched &&
+                form.controls['password'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Password"
+              formControlName="password"
+            />
+            <nb-icon
+              class="password-icon"
+              [icon]="eyeIcon"
+              (click)="showPassword()"
+              pack="eva"
+            ></nb-icon>
+          </div>
+        </div>
+        <div class="col-sm-12" [ngClass]="{ critical: updateUser }">
+          <div class="form-group">
+            <label for="inputWebsite" class="label">Confirm Password</label>
+            <input
+              type="{{ showpassword ? 'text' : 'password' }}"
+              nbInput
+              fullWidth
+              id="inputWebsite"
+              [status]="
+                form?.get('confirm').touched &&
+                form.controls['confirm'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Confirm Password"
+              formControlName="confirm"
+            />
+            <nb-icon
+              class="password-icon"
+              [icon]="eyeIcon"
+              (click)="showPassword()"
+              pack="eva"
+            ></nb-icon>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <nb-card-header>Role</nb-card-header>
+            <nb-select formControlName="role" [selected]="selected">
+              <nb-option value="admin">Admin</nb-option>
+              <nb-option value="user">User</nb-option>
+              <!-- <nb-option value="customer">Customer</nb-option> -->
+            </nb-select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button type="submit" nbButton [status]="buttonStatus" outline>
+            {{ buttonTxt | titlecase }}
+          </button>
+          &nbsp;
+          <button
+            type="button"
+            nbButton
+            status="danger"
+            (click)="closeModal()"
+            outline
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

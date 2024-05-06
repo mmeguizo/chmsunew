@@ -1,0 +1,16 @@
+::ng-deep .cdk-overlay-container {
+  z-index: 9999999 !important
+}
+
+
+.critical {
+  display : none;
+}
+
+
+.password-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 47%;
+  left: 82%;
+}

@@ -1,0 +1,142 @@
+<nb-card>
+  <nb-card-header> Register </nb-card-header>
+  <nb-card-body>
+    <form autocomplete="off" [formGroup]="form" (submit)="executeAction(form)">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="inputFirstName" class="label">Username</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="inputFirstName"
+              [status]="
+                form?.get('username').touched &&
+                form.controls['username'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Username"
+              formControlName="username"
+            />
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="inputLastName" class="label">Email</label>
+            <input
+              type="email"
+              nbInput
+              fullWidth
+              id="inputLastName"
+              [status]="
+                form?.get('email').touched &&
+                form.controls['email'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Email"
+              formControlName="email"
+              autocomplete="off"
+            />
+            <div
+              *ngIf="
+                (form.get('email').hasError('required') &&
+                  form.get('email').touched) ||
+                form.get('email').hasError('email') ||
+                form.get('email').hasError('pattern')
+              "
+              class="alert alert-danger"
+            >
+              <span
+                *ngIf="
+                  form.get('email').touched &&
+                  form.get('email').hasError('required')
+                "
+              >
+                You must enter an email address.
+              </span>
+              <span *ngIf="form.get('email').hasError('email')"
+                >Please enter a valid email address.</span
+              >
+              <span *ngIf="form.get('email').hasError('pattern')"
+                >Only Chmsu addresses (chmsu.edu.ph) are accepted.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12" [ngClass]="{ critical: updateUser }">
+          <div class="form-group">
+            <label for="inputEmail" class="label">Password</label>
+            <input
+              type="{{ showpassword ? 'text' : 'password' }}"
+              nbInput
+              fullWidth
+              id="inputEmail"
+              [status]="
+                form?.get('password').touched &&
+                form.controls['password'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Password"
+              formControlName="password"
+              autocomplete="new-password"
+            />
+            <nb-icon
+              class="password-icon"
+              [icon]="eyeIcon"
+              (click)="showPassword()"
+              pack="eva"
+            ></nb-icon>
+          </div>
+        </div>
+        <div class="col-sm-12" [ngClass]="{ critical: updateUser }">
+          <div class="form-group">
+            <label for="inputWebsite" class="label">Confirm Password</label>
+            <input
+              type="{{ showpassword ? 'text' : 'password' }}"
+              nbInput
+              fullWidth
+              id="inputWebsite"
+              [status]="
+                form?.get('confirm').touched &&
+                form.controls['confirm'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Confirm Password"
+              formControlName="confirm"
+            />
+            <nb-icon
+              class="password-icon"
+              [icon]="eyeIcon"
+              (click)="showPassword()"
+              pack="eva"
+            ></nb-icon>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button type="submit" nbButton [status]="buttonStatus" outline>
+            Submit
+          </button>
+          &nbsp;
+          <button
+            type="button"
+            nbButton
+            status="danger"
+            (click)="closeModal()"
+            outline
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

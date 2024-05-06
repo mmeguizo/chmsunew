@@ -1,0 +1,104 @@
+.error {
+  color: #ff6b83;
+}
+.fieldError {
+  border: 2px solid #ff6b83;
+}
+.avatar-container {
+  margin-top: 20px;
+  margin-left: 40px;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+}
+
+@media (max-width: 566px) {
+  .avatar-container {
+    margin-left: 31%;
+  }
+}
+
+@media (max-width: 440px) {
+  .avatar-container {
+    margin-left: 26%;
+  }
+}
+
+@media (max-width: 375px) {
+  .avatar-container {
+    margin-left: 21%;
+  }
+}
+
+@media (max-width: 320px) {
+  .avatar-container {
+    margin-left: 16%;
+  }
+}
+
+.avatar-image {
+  font-size: 150px;
+  padding-top: 11%;
+}
+
+.display-photo {
+  height: 150px;
+  width: 150px;
+  border: 2px solid #eee;
+  border-radius: 50%;
+  background-color: #ccc;
+  background-size: cover;
+  background-position: center;
+  margin: 0 auto;
+  margin-left: 11px;
+}
+
+p {
+  margin-top: 5px;
+}
+
+.browse-btn {
+  margin-top: 2%;
+  margin-right: 16%;
+  padding: 3px;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 9999999 !important;
+}
+
+.critical {
+  display: none;
+}
+
+.password-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 47%;
+  left: 82%;
+}
+
+::ng-deep .nb-theme-cosmic nb-card {
+  margin-bottom: 0px !important;
+  .update-profile-dialog {
+    background: #222b45 !important;
+  }
+
+  @media (min-width: 768px) {
+    .update-profile-dialog {
+      background: #222b45 !important;
+    }
+  }
+}
+
+::ng-deep .nb-theme-dark nb-card {
+  margin-bottom: 0px !important;
+  .update-profile-dialog {
+    background-color: #222b45 !important;
+  }
+  @media (min-width: 768px) {
+    .update-profile-dialog {
+      background: #222b45 !important;
+    }
+  }
+}

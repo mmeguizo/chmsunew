@@ -1,0 +1,14 @@
+
+  <nb-card>
+    <nb-card-header> Performing {{  headerTitle  | titlecase}}  <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button></nb-card-header>
+  <nb-card-body>
+    <span class="align-center"> {{ bodyContent | titlecase }} {{ username || anyVariable | titlecase}}</span>
+  </nb-card-body>
+  <nb-card-footer class="d-block">
+    <button nbButton status="danger" class="float-left" (click)="closeModal()">No</button>
+    <button nbButton status="success" class="float-right" (click)="runQuery()">Yes</button>
+    <div class="clearfix"></div>
+  </nb-card-footer>
+</nb-card>

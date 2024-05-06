@@ -1,0 +1,27 @@
+.container {
+  padding: 2rem 0rem;
+}
+
+h4 {
+  margin: 2rem 0rem 1rem;
+}
+
+.table-image {
+  td, th {
+    vertical-align: middle;
+  }
+}
+
+.active{
+  background: #007925c4;
+  color: white;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+}
+
+.iconDelete {
+
+  width: 2em;
+  height: 2em;
+}

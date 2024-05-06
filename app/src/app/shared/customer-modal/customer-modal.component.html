@@ -1,0 +1,91 @@
+<div class="col-md-12">
+  <nb-card>
+<nb-card-header> {{ action | titlecase }} Customer11 {{ updateCustomer ? updateCustomer : '' }} </nb-card-header>
+<nb-card-body>
+  <form [formGroup]="form"  enctype="multipart/form-data" >
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="inputFirstName" class="label">Name</label>
+        <input type="text" nbInput fullWidth id="name" [status]="form?.get('name').touched && form.controls['name'].errors?.required ? 'danger' : '' "  placeholder="Username" formControlName="name">
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="inputLastName" class="label">Email</label>
+        <input type="email" nbInput fullWidth id="inputLastName" [status]="form?.get('email').touched && form.controls['email'].errors?.required ? 'danger' : '' "  placeholder="Email" formControlName="email">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="inputFirstName" class="label">Address</label>
+        <input type="text" nbInput fullWidth id="address" [status]="form?.get('address').touched && form.controls['address'].errors?.required ? 'danger' : '' "  placeholder="Address" formControlName="address">
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="inputLastName" class="label">Company</label>
+        <input type="text" nbInput fullWidth id="company" [status]="form?.get('company').touched && form.controls['company'].errors?.required ? 'danger' : '' "  placeholder="Company" formControlName="company">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="inputFirstName" class="label">Phone</label>
+        <input type="text" nbInput fullWidth id="phone" [status]="form?.get('phone').touched && form.controls['phone'].errors?.required ? 'danger' : '' "  placeholder="Phone" formControlName="phone">
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="inputLastName" class="label">Notes</label>
+        <!-- <input type="text" nbInput fullWidth id="notes" [status]="form?.get('notes').touched && form.controls['notes'].errors?.required ? 'danger' : '' "  placeholder="Notes" formControlName="notes"> -->
+        <textarea rows="5" nbInput fullWidth id="notes"  [status]="form?.get('notes').touched && form.controls['notes'].errors?.required ? 'danger' : '' " placeholder="Notes" formControlName="notes"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group"> -->
+        <!-- <label for="inputFirstName" class="label">Attachment</label>
+        <input type="file" multiple nbInput fullWidth id="file" name="file" [status]="form?.get('attachment').touched && form.controls['attachment'].errors?.required ? 'danger' : '' "  placeholder="Attachment" formControlName="attachment" (change)="openFile($event, 'file')"> -->
+
+        <!-- <input type="file" name="file" class="d-none" multiple id="file"  (change)="openFile($event, 'file')"> -->
+
+          <!-- <button class="btn btn-primary browse-btn"   nbSpinnerStatus="primary" nbSpinnerSize="tiny" nbSpinnerMessage="" (click)="openFile($event, 'file')">Choose Files</button> -->
+          <!-- <div class="avatar-container"> -->
+            <!-- <div class="display-photo" *ngIf="profile_pic">
+              <img   [src]="this.auth.domain+'/profile_pic/'+profile_pic ">
+            </div>
+            <div class="display-photo" *ngIf=""
+              [style.background-image]="'url('+this.auth.domain+'/images/'+profile_pic+')'">
+            </div>
+            <div class="display-photo" *ngIf="!profile_pic"
+              [style.background-image]="'url('+this.auth.domain+'/images/no-photo.png'+')'">
+            </div> -->
+          <input type="file" name="file" class="d-none" multiple="multiple" id="file">
+            <button class="btn btn-primary browse-btn"  nbSpinnerStatus="primary" nbSpinnerSize="tiny" nbSpinnerMessage="" (click)="openFile($event, 'file')"> Choose Files</button>
+            <span> Files <strong> {{ theFileLength }} </strong></span>
+     </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="inputFirstName" class="label">Open Balance</label>
+        <input type="text" name="open_balance" nbInput fullWidth id="open_balance" [status]="form?.get('open_balance').touched && form.controls['open_balance'].errors?.required ? 'danger' : '' "  placeholder="Open Balance" formControlName="open_balance" >
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 text-center">
+      <button type="submit" nbButton [status]="buttonStatus" outline (click)="executeAction(form)" > {{ buttonTxt | titlecase }}  </button> &nbsp;
+      <button type="button" nbButton status="danger" (click)="closeModal()" outline>Cancel</button>
+    </div>
+  </div>
+</form>
+</nb-card-body>
+</nb-card>
+</div>

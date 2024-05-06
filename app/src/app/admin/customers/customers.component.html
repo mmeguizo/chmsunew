@@ -1,0 +1,74 @@
+
+
+<div class="row">
+  <div class="col-sm-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <nb-card-header>
+        <div class="action-groups-header" style="float: left; clear: both">
+          Customer Lists
+        </div>
+        <nb-actions size="medium" style="float: right; font-size: 10px;">
+          <nb-action color="success" nbPopover="Add new customer" nbPopoverTrigger="hint"
+            nbPopoverPlacement="bottom" (click)="addCustomer()">
+            <nb-icon id="addUser" icon="person-add-outline"></nb-icon></nb-action>
+        </nb-actions>
+      </nb-card-header>
+      <nb-card-body  style="height: 200pxpx;min-height: 580px;padding-bottom: 31px;">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="clear"></div>
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Company</th>
+                  <th>Address</th>
+                  <th>Balance</th>
+                  <th>Status</th>
+                  <th>Files</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="data?.length != 0">
+                <tr *ngFor="let customer of data;let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ customer.name }}</td>
+                  <td>{{ customer.email }}</td>
+                  <td>{{ customer.company }}</td>
+                  <td>{{ customer.address }}</td>
+                  <td>₱{{ customer.open_balance }}</td>
+                  <!-- <td>{{ customer.status }}</td> -->
+                  <td scope="col">
+                    <span class="pointer" (click)="changeStatus(customer)"
+                      [ngClass]="{'active': customer.status == 'active',  'inactive': customer.status == 'inactive' }">{{ customer.status | titlecase}}</span>
+                  </td>
+                  <td scope="col">
+                    <span (click)="viewAttachment(customer.id)"
+                      class="active text-center pointer">📁</span>
+                  </td>
+                  <td scope="col" id="options">
+                    <span>
+                      <nb-action  nbPopover="Update User" nbPopoverTrigger="hint"
+                      nbPopoverPlacement="bottom" (click)="updateCustomer(customer.id)"><nb-icon  id="updateUser" icon="edit-2" ></nb-icon></nb-action>
+                    </span>
+                    &nbsp;
+                    &nbsp;
+                    <span>
+                      <nb-action   nbPopover="Delete User" nbPopoverTrigger="hint"
+                      nbPopoverPlacement="bottom" (click)="deleteCustomer(customer)"><nb-icon id="deleteUser" icon="trash-2-outline"></nb-icon></nb-action>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+

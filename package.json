@@ -1,0 +1,45 @@
+{
+  "name": "akeem_services",
+  "version": "1.0.0",
+  "description": "Master App Template for future project releases",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://TinkerTechInc@bitbucket.org/tinkertechteam/akeem_services.git"
+  },
+  "keywords": [
+    "angular",
+    "2+",
+    "mean",
+    "stack",
+    "master",
+    "app"
+  ],
+  "author": "mark oliver meguizo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/tinkertechteam/akeem_services/issues"
+  },
+  "homepage": "https://bitbucket.org/tinkertechteam/akeem_services#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
+    "mongoose": "^6.6.4",
+    "ngx-doc-viewer": "^15.0.1",
+    "rxjs": "^7.5.7",
+    "socket.io": "^4.5.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "formidable": "^2.0.1",
+    "multer": "^1.4.5-lts.1"
+  }
+}
