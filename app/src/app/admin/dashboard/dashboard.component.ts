@@ -128,9 +128,7 @@ export class DashboardComponent implements OnInit {
           .getJsTheme()
           .pipe(takeWhile(() => this.alive))
           .subscribe((theme) => {
-            console.log(theme);
             this.statusCards = this.statusCardsByThemes[theme.name];
-            console.log(this.statusCards);
           });
       });
   }

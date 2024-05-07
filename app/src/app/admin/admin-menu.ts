@@ -12,9 +12,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: "person-outline",
     link: "/admin/users",
   },
-  // {
-  //   title: 'Customers',
-  //   icon: 'person-done-outline',
-  //   link: '/admin/customers',
-  // },
+  {
+    title: "Objectives",
+    icon: "calendar-outline",
+    link: "/admin/objectives",
+  },
 ];

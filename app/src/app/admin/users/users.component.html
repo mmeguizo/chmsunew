@@ -44,8 +44,24 @@
                   <td>{{ i + 1 }}</td>
                   <td>{{ person.username | titlecase }}</td>
                   <td>{{ person.email }}</td>
-                  <td>{{ person.role | titlecase }}</td>
-                  <td scope="col">
+                  <td>
+                    <span
+                      nbTooltip="{{ person.role | titlecase }}"
+                      nbTooltipPlacement="top"
+                      style="font-size: x-large"
+                    >
+                      {{ person.role === "admin" ? "👨🏻‍💼" : "🤵🏻" }}</span
+                    >
+                    <i style="display: none"> {{ person.role | titlecase }}</i>
+                  </td>
+                  <td scope="col" class="pointer">
+                    <span
+                      (click)="changeStatus(person)"
+                      [className]="person.status"
+                      >{{ person.status | titlecase }}</span
+                    >
+                  </td>
+                  <!-- <td scope="col">
                     <span
                       class="pointer"
                       (click)="changeStatus(person)"
@@ -56,7 +72,7 @@
                       }"
                       >{{ person.status | titlecase }}</span
                     >
-                  </td>
+                  </td> -->
                   <td scope="col" id="options">
                     <span>
                       <nb-action
@@ -90,6 +106,3 @@
     </nb-card>
   </div>
 </div>
-<!-- <i class="fas fa-user"></i>
-<nb-icon icon="edit-2" style="color: blue"></nb-icon>
-<i class="fa-solid fa-pen-to-square"></i>-->

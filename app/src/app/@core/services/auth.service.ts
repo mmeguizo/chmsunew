@@ -253,10 +253,6 @@ export class AuthService {
    */
   public Observer(): void {
     let role = this.getUserRole();
-
-    console.log({ role: role });
-
-    // let role = this.getTokenData("role");
     let self = this.router.events.subscribe((nextUrl) => {
       if (nextUrl instanceof NavigationEnd) {
         if (this.location.path().split("/")[1] !== role) {

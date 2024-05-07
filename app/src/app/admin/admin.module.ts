@@ -39,6 +39,7 @@ import { FilesComponent } from "../shared/files/files.component";
 import { UploadsComponent } from "../shared/uploads/uploads.component";
 
 import { StatusCardComponent } from "./status-card/status-card.component";
+import { ObjectivesComponent } from './objectives/objectives.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -89,6 +90,7 @@ const NB_MODULES = [
     FilesComponent,
     UploadsComponent,
     StatusCardComponent,
+    ObjectivesComponent,
   ],
   entryComponents: [
     UpdateProfileComponent,
