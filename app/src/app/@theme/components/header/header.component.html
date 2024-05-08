@@ -34,20 +34,21 @@
       {{ theme.name }}</nb-option
     >
   </nb-select> -->
-
-  <div style="padding-top: 6%">
-    <input
-      type="checkbox"
-      class="checkbox"
-      id="toggleBtn"
-      (change)="changeTheme($event.target.checked ? 'dark' : 'default')"
-    />
-    <label class="switch" for="toggleBtn">
-      <i class="fas fa-moon"></i>
-      <i class="fas fa-sun"></i>
-      <div class="ball"></div>
-    </label>
-  </div>
+  <ng-container *ngIf="admin">
+    <div style="padding-top: 6%">
+      <input
+        type="checkbox"
+        class="checkbox"
+        id="toggleBtn"
+        (change)="changeTheme($event.target.checked ? 'dark' : 'default')"
+      />
+      <label class="switch" for="toggleBtn">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+        <div class="ball"></div>
+      </label>
+    </div>
+  </ng-container>
 
   <nb-actions size="small">
     <nb-action class="user-action" *nbIsGranted="['view', 'user']" matRipple>

@@ -31,6 +31,7 @@
               }
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/typeface-exo/index.css",
               "node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
@@ -131,6 +132,7 @@
               "node_modules/chart.js/dist/Chart.min.js"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/typeface-exo/index.css",
               "node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
@@ -156,10 +158,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
             "typeCheck": true,
             "exclude": []
           }
@@ -181,9 +180,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
+            "tsConfig": ["e2e/tsconfig.e2e.json"],
             "exclude": []
           }
         }

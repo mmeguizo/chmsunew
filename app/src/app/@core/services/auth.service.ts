@@ -267,6 +267,10 @@ export class AuthService {
    * @param {String} key any object property of signed user
    * @return {String} key value
    */
+
+  getCurrentTheme() {
+    return localStorage.getItem("theme");
+  }
   public getTokenData(key?) {
     try {
       if (this.hasToken) {

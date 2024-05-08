@@ -44,77 +44,49 @@ module.exports = (router) => {
   });
 
   router.post("/addUser", (req, res) => {
-    if (!req.body.email) {
-      res.json({ success: false, message: "You must provide an email" });
-    } else {
-      if (!req.body.username) {
-        res.json({ success: false, message: "You must provide an username" });
-      } else {
-        if (!req.body.password) {
-          res.json({ success: false, message: "You must provide an password" });
-        } else if (req.body.password !== req.body.confirm) {
-          res.json({ success: false, message: "Password dont match" });
-        } else {
-          let user = new User({
-            id: uuidv4(),
-            email: req.body.email.toLowerCase(),
-            username: req.body.username.toLowerCase(),
-            password: req.body.password,
-            role: req.body.role.toLowerCase(),
-          });
+    const { email, username, password, confirm } = req.body;
+    if (!email || !username || !password || password !== confirm) {
+      return res.json({
+        success: false,
+        message:
+          "You must provide an email, username, password and matching password",
+      });
+    }
 
-          user.save((err, data) => {
-            if (err) {
-              if (err.code === 11000) {
-                res.json({
-                  success: false,
-                  message: "User name or Email already exists ",
-                  err: err.message,
-                });
-              } else {
-                if (err.errors) {
-                  //for specific error email,username and password
-                  if (err.errors.email) {
-                    res.json({
-                      success: false,
-                      message: err.errors.email.message,
-                    });
-                  } else {
-                    if (err.errors.username) {
-                      res.json({
-                        success: false,
-                        message: err.errors.username.message,
-                      });
-                    } else {
-                      if (err.errors.password) {
-                        res.json({
-                          success: false,
-                          message: err.errors.password.message,
-                        });
-                      } else {
-                        res.json({ success: false, message: err });
-                      }
-                    }
-                  }
-                } else {
-                  res.json({
-                    success: false,
-                    message: "Could not save user Error : " + err,
-                  });
-                }
-              }
-            } else {
-              res.json({
-                success: true,
-                message: "This user is successfully Registered ",
-                data: { email: data.email, username: data.username },
-              });
-              // globalconnetion.emitter('user')
-            }
+    const userData = {
+      id: uuidv4(),
+      email: req.body.email.toLowerCase(),
+      username: req.body.username.toLowerCase(),
+      password: req.body.password,
+      // role: req.body.role.toLowerCase(),
+    };
+
+    User.create(userData)
+      .then((data) => {
+        res.json({
+          success: true,
+          message: "This user is successfully Registered ",
+          data: { email: data.email, username: data.username },
+        });
+      })
+      .catch((err) => {
+        if (err.code === 11000) {
+          res.json({
+            success: false,
+            message: "User name or Email already exists ",
+            err: err.message,
+          });
+        } else if (err.errors) {
+          //for specific error email,username and password
+          const errors = Object.keys(err.errors);
+          res.json({ success: false, message: err.errors[errors[0]].message });
+        } else {
+          res.json({
+            success: false,
+            message: "Could not save user Error : " + err,
           });
         }
-      }
-    }
+      });
   });
 
   router.put("/deleteUser", (req, res) => {

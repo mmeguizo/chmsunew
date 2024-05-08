@@ -29,7 +29,6 @@ let validEmailChecker = (email) => {
     return false;
   } else {
     const regExp = new RegExp(/^([^\s@]+)@chmsu\.edu\.ph$/);
-    console.log(regExp.test(email));
     return regExp.test(email);
   }
 };

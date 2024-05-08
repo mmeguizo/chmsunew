@@ -21,7 +21,7 @@ const userSchema = new Schema({
     lowercase: true,
     validate: username.usernameValidators,
   },
-  role: { type: String, required: true },
+  role: { type: String, default: "user" },
   status: { type: String, default: "pending" },
   deleted: { type: Boolean, default: false },
   password: {

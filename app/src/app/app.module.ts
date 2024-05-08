@@ -59,6 +59,7 @@ export function tokenGetter() {
     NbDialogModule.forRoot(),
     NgbModule,
     SharedModule,
+    // ...NB_MODULES,
     // NgxDocViewerModule
   ],
   bootstrap: [AppComponent],

@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       name: "Corporate",
     },
   ];
+  admin: boolean;
 
   constructor(
     private sidebarService: NbSidebarService,
@@ -62,6 +63,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private breakpointService: NbMediaBreakpointsService
   ) {
+    if (this.auth.getUserRole() == "admin") {
+      this.admin = true;
+    }
+
     const savedTheme = this.getCurrentTheme();
     if (savedTheme) {
       this.setThemeStyle(savedTheme);
@@ -108,16 +113,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  changeTheme(themeName: string) {
+  changeTheme(themeName: string = "default") {
     console.log(themeName);
-
     this.themeService.changeTheme(themeName);
   }
 
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, "menu-sidebar");
     this.layoutService.changeLayoutSize();
-
     return false;
   }
 

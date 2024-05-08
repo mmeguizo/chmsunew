@@ -39,8 +39,8 @@ import { FilesComponent } from "../shared/files/files.component";
 import { UploadsComponent } from "../shared/uploads/uploads.component";
 
 import { StatusCardComponent } from "./status-card/status-card.component";
-import { ObjectivesComponent } from './objectives/objectives.component';
-
+import { ObjectivesComponent } from "./objectives/objectives.component";
+import { Ng2SmartTableModule } from "ng2-smart-table";
 const NB_MODULES = [
   NbLayoutModule,
   NbMenuModule,
@@ -77,6 +77,8 @@ const NB_MODULES = [
     DataTablesModule,
     // ImageCropperModule,
     ...NB_MODULES,
+    Ng2SmartTableModule,
+
     // NgApexchartsModule
   ],
   declarations: [

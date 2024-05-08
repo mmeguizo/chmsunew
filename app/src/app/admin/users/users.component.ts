@@ -1,19 +1,21 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-} from "@angular/core";
-import { NbPopoverDirective } from "@nebular/theme";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { UserService } from "../../@core/services/user.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { CommonComponent } from "../../shared/common/common.component";
 import { AuthService } from "../../@core/services/auth.service";
-import { DataTableDirective } from "angular-datatables";
 import { UsersModalComponent } from "../../shared/users-modal/users-modal.component";
+import { MatTableDataSource } from "@angular/material/table";
+
+export interface UsersElement {
+  _id: string;
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+  status: string;
+}
 
 @Component({
   selector: "ngx-users",
@@ -21,27 +23,19 @@ import { UsersModalComponent } from "../../shared/users-modal/users-modal.compon
   styleUrls: ["./users.component.scss"],
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject<any>();
+  displayedColumns: string[] = [
+    "#",
+    "username",
+    "email",
+    "role",
+    "status",
+    "options",
+  ];
+  dataSource: any;
 
-  bsValue = new Date();
-  filterQuery = "";
-  sortBy = "id";
-  sortOrder = "asc";
-  selectQueryString = "Last Name";
-  selectQuery = "lname";
-  data;
+  data: UsersElement;
   loading = true;
-  date = new Date();
-  todate;
-  public socketInstance;
-  me;
 
-  // @ViewChild(NbPopoverDirective, { static: false }) popover: NbPopoverDirective;
-  // @ViewChild("search", { static: false }) nameField: ElementRef;
-
-  dataSource;
   private getUserSubscription = new Subject<void>();
   constructor(
     public user: UserService,
@@ -51,35 +45,22 @@ export class UsersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.data = [];
     this.getAllUsersInitially();
+
+    //workaround for dark theme for table
   }
 
   getAllUsersInitially() {
-    this.dtOptions = {
-      pagingType: "full_numbers",
-      pageLength: 10,
-    };
     this.user
       .getAllUsers()
       .pipe(takeUntil(this.getUserSubscription))
       .subscribe((data: any) => {
         this.data = data.user;
+        this.dataSource = new MatTableDataSource(data.user);
+        console.log(this.data);
         this.loading = false;
-        //  this.data = (data as any).data;
-        // Calling the DT trigger to manually render the table
-        this.dtTrigger.next();
       });
   }
-
-  // selectFilter(name, value) {
-  //   console.log({ name, value });
-  //   this.selectQuery = name;
-  //   this.selectQueryString = value;
-  //   this.popover.hide();
-  //   setTimeout(() => this.nameField.nativeElement.focus(), 0);
-  //   this.filterQuery = "";
-  // }
 
   addUser() {
     const activeModal = this.ngbModal.open(UsersModalComponent, {
@@ -105,7 +86,7 @@ export class UsersComponent implements OnInit, OnDestroy {
               `Adding ${receivedEntry.data?.username}`,
               receivedEntry.message
             ),
-            this.rerender(),
+            this.getAllUsersInitially(),
           ]
         : [
             this.auth.makeToast(
@@ -113,7 +94,6 @@ export class UsersComponent implements OnInit, OnDestroy {
               `Adding ${receivedEntry.data?.username || "failed"}`,
               receivedEntry.message
             ),
-            this.rerender(),
           ];
     });
   }
@@ -144,7 +124,7 @@ export class UsersComponent implements OnInit, OnDestroy {
               `Updating ${receivedEntry.data?.username}`,
               receivedEntry.message
             ),
-            this.rerender(),
+            this.getAllUsersInitially(),
           ]
         : [
             this.auth.makeToast(
@@ -152,7 +132,6 @@ export class UsersComponent implements OnInit, OnDestroy {
               `Updating ${receivedEntry.data?.username || "failed"}`,
               receivedEntry.message
             ),
-            this.rerender(),
           ];
     });
   }
@@ -169,7 +148,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     activeModal.componentInstance.model = "user";
     activeModal.componentInstance.endpointType = "put";
     activeModal.componentInstance.apiName = "setInactiveUser";
-    activeModal.componentInstance.headerTitle = "Deleting";
+    activeModal.componentInstance.headerTitle = "Delete User";
     activeModal.componentInstance.bodyContent = "Deleting";
     activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {
       receivedEntry.success
@@ -179,7 +158,7 @@ export class UsersComponent implements OnInit, OnDestroy {
               `Deleting ${receivedEntry.data?.username || person.username}`,
               receivedEntry.message
             ),
-            this.rerender(),
+            this.getAllUsersInitially(),
           ]
         : [
             this.auth.makeToast(
@@ -187,7 +166,6 @@ export class UsersComponent implements OnInit, OnDestroy {
               `Deleting ${receivedEntry.data?.username || "failed"}`,
               receivedEntry.message
             ),
-            this.rerender(),
           ];
     });
   }
@@ -213,31 +191,18 @@ export class UsersComponent implements OnInit, OnDestroy {
           "Changing Status Success",
           `Status change ${person.username}`
         ),
-        this.rerender(),
+        this.getAllUsersInitially(),
       ];
     });
   }
 
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-    this.getUserSubscription.unsubscribe();
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  rerender(): void {
-    this.user
-      .getAllUsers()
-      .pipe(takeUntil(this.getUserSubscription))
-      .subscribe((data: any) => {
-        this.data = data.user;
-        this.loading = false;
-      });
-
-    this.dtElement?.dtInstance?.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.getUserSubscription.unsubscribe();
   }
 }

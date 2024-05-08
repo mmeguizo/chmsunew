@@ -23,12 +23,106 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="clear"></div>
-            <table
-              datatable
-              [dtOptions]="dtOptions"
-              [dtTrigger]="dtTrigger"
-              class="row-border hover"
-            >
+            <mat-form-field appearance="standard">
+              <mat-label>Filter</mat-label>
+              <input
+                matInput
+                (keyup)="applyFilter($event)"
+                placeholder="Ex. user or inactive"
+                #input
+              />
+            </mat-form-field>
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <!-- Position Column -->
+              <ng-container matColumnDef="#">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let data; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="username">
+                <th mat-header-cell *matHeaderCellDef>Username</th>
+                <td mat-cell *matCellDef="let data">
+                  {{ data.username | titlecase }}
+                </td>
+              </ng-container>
+              <!-- Weight Column -->
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let data">{{ data.email }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="role">
+                <th mat-header-cell *matHeaderCellDef>Role</th>
+                <td mat-cell *matCellDef="let data">
+                  <span
+                    >{{ data.role === "admin" ? "👨🏻‍💻" : "👨🏻‍💼" }}
+                    {{ data.role | titlecase }}</span
+                  >
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let data">
+                  <span
+                    class="pointer"
+                    (click)="changeStatus(data)"
+                    [ngClass]="{
+                      active: data.status == 'active',
+                      inactive: data.status == 'inactive',
+                      low: data.status == 'pending'
+                    }"
+                    >{{ data.status | titlecase }}</span
+                  >
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef>Options</th>
+                <td mat-cell *matCellDef="let data">
+                  <div style="display: flex">
+                    <span>
+                      <nb-action
+                        nbPopover="Update User"
+                        nbPopoverTrigger="hint"
+                        nbPopoverPlacement="bottom"
+                        (click)="updateUser(data.id)"
+                        ><nb-icon id="updateUser" icon="edit-2"></nb-icon
+                      ></nb-action>
+                    </span>
+                    &nbsp; &nbsp;
+                    <span>
+                      <nb-action
+                        nbPopover="Delete User"
+                        nbPopoverTrigger="hint"
+                        nbPopoverPlacement="bottom"
+                        (click)="deleteUser(data)"
+                        ><nb-icon
+                          id="deleteUser"
+                          icon="trash-2-outline"
+                        ></nb-icon
+                      ></nb-action>
+                    </span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">
+                  No data matching the filter "{{ input.value }}"
+                </td>
+              </tr>
+            </table>
+
+            <!-- <table>
               <thead>
                 <tr>
                   <th>ID</th>
@@ -39,70 +133,69 @@
                   <th scope="col" width="10%">Options</th>
                 </tr>
               </thead>
-              <tbody *ngIf="data?.length != 0">
-                <tr *ngFor="let person of data; let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ person.username | titlecase }}</td>
-                  <td>{{ person.email }}</td>
-                  <td>
-                    <span
-                      nbTooltip="{{ person.role | titlecase }}"
-                      nbTooltipPlacement="top"
-                      style="font-size: x-large"
+              <tbody *ngIf="data">
+                <ng-container *ngIf="data.length; else noData">
+                  <tr *ngFor="let person of data; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ person.username | titlecase }}</td>
+                    <td>{{ person.email }}</td>
+                    <td>{{ person.role | titlecase }}</td>
+                    <td scope="col">
+                      <span
+                        class="pointer"
+                        (click)="changeStatus(person)"
+                        [ngClass]="{
+                          active: person.status == 'active',
+                          inactive: person.status == 'inactive',
+                          low: person.status == 'pending'
+                        }"
+                        >{{ person.status | titlecase }}</span
+                      >
+                    </td>
+                    <td scope="col" id="options">
+                      <span>
+                        <nb-action
+                          nbPopover="Update User"
+                          nbPopoverTrigger="hint"
+                          nbPopoverPlacement="bottom"
+                          (click)="updateUser(person.id)"
+                          ><nb-icon id="updateUser" icon="edit-2"></nb-icon
+                        ></nb-action>
+                      </span>
+                      &nbsp; &nbsp;
+                      <span>
+                        <nb-action
+                          nbPopover="Delete User"
+                          nbPopoverTrigger="hint"
+                          nbPopoverPlacement="bottom"
+                          (click)="deleteUser(person)"
+                          ><nb-icon
+                            id="deleteUser"
+                            icon="trash-2-outline"
+                          ></nb-icon
+                        ></nb-action>
+                      </span>
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-template #noData>
+                  <tr>
+                    <td
+                      colspan="6"
+                      style="text-align: center; font-weight: bold"
                     >
-                      {{ person.role === "admin" ? "👨🏻‍💼" : "🤵🏻" }}</span
-                    >
-                    <i style="display: none"> {{ person.role | titlecase }}</i>
-                  </td>
-                  <td scope="col" class="pointer">
-                    <span
-                      (click)="changeStatus(person)"
-                      [className]="person.status"
-                      >{{ person.status | titlecase }}</span
-                    >
-                  </td>
-                  <!-- <td scope="col">
-                    <span
-                      class="pointer"
-                      (click)="changeStatus(person)"
-                      [ngClass]="{
-                        active: person.status == 'active',
-                        inactive: person.status == 'inactive',
-                        low: person.status == 'pending'
-                      }"
-                      >{{ person.status | titlecase }}</span
-                    >
-                  </td> -->
-                  <td scope="col" id="options">
-                    <span>
-                      <nb-action
-                        nbPopover="Update User"
-                        nbPopoverTrigger="hint"
-                        nbPopoverPlacement="bottom"
-                        (click)="updateUser(person.id)"
-                        ><nb-icon id="updateUser" icon="edit-2"></nb-icon
-                      ></nb-action>
-                    </span>
-                    &nbsp; &nbsp;
-                    <span>
-                      <nb-action
-                        nbPopover="Delete User"
-                        nbPopoverTrigger="hint"
-                        nbPopoverPlacement="bottom"
-                        (click)="deleteUser(person)"
-                        ><nb-icon
-                          id="deleteUser"
-                          icon="trash-2-outline"
-                        ></nb-icon
-                      ></nb-action>
-                    </span>
-                  </td>
-                </tr>
+                      No data available
+                    </td>
+                  </tr>
+                </ng-template>
               </tbody>
-            </table>
+            </table> -->
           </div>
         </div>
       </nb-card-body>
     </nb-card>
   </div>
 </div>
+<!-- <i class="fas fa-user"></i>
+<nb-icon icon="edit-2" style="color: blue"></nb-icon>
+<i class="fa-solid fa-pen-to-square"></i>-->

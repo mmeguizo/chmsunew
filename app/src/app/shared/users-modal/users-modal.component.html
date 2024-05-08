@@ -1,7 +1,5 @@
 <nb-card>
-  <nb-card-header>
-    {{ action | titlecase }} User {{ updateUser ? updateUser : "" }}
-  </nb-card-header>
+  <nb-card-header> {{ action | titlecase }} User </nb-card-header>
   <nb-card-body>
     <form [formGroup]="form" (submit)="executeAction(form)">
       <div class="row">
@@ -40,7 +38,70 @@
               "
               placeholder="Email"
               formControlName="email"
+              autocomplete="off"
             />
+            <div
+              *ngIf="
+                (form.get('email').hasError('required') &&
+                  form.get('email').touched) ||
+                form.get('email').hasError('email') ||
+                form.get('email').hasError('pattern')
+              "
+              class="alert alert-danger"
+            >
+              <span
+                *ngIf="
+                  form.get('email').touched &&
+                  form.get('email').hasError('required')
+                "
+              >
+                You must enter an email address.
+              </span>
+              <span *ngIf="form.get('email').hasError('email')"
+                >Please enter a valid email address.</span
+              >
+              <span *ngIf="form.get('email').hasError('pattern')"
+                >Only Chmsu addresses (chmsu.edu.ph) are accepted.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group" style="display: grid">
+            <!-- <nb-card>
+              <nb-card-header>Select</nb-card-header>
+              <nb-card-body>
+                <nb-select selected="1">
+                  <nb-option value="1">Option 1</nb-option>
+                  <nb-option value="2">Option 2</nb-option>
+                </nb-select>
+              </nb-card-body>
+            </nb-card>
+
+
+          <select (change)="updateSorting($event)">
+  <option disabled selected>Sorting</option>
+  <option value="pointDes">pointDes</option>
+  <option value="timeDes">timeDes</option>
+  <option value="timeAsc">timeAsc</option>
+  <option value="pointAsc">pointAsc</option>
+</select>
+
+
+
+          -->
+
+            <label class="label" for="Select">Choose Dept.</label>
+            <nb-select
+              formControlName="department"
+              (ngModelChange)="editDept($event)"
+              selected="0"
+            >
+              <nb-option disabled label="0">--</nb-option>
+              <nb-option value="pointDes"> --Manage Dept.-- </nb-option>
+              <nb-option value="timeDes">Option 1</nb-option>
+              <nb-option value="pointAsc">Option 2</nb-option>
+            </nb-select>
           </div>
         </div>
       </div>
@@ -61,6 +122,7 @@
               "
               placeholder="Password"
               formControlName="password"
+              autocomplete="new-password"
             />
             <nb-icon
               class="password-icon"
@@ -95,16 +157,16 @@
             ></nb-icon>
           </div>
         </div>
-        <div class="col-sm-12">
+        <!-- <div class="col-sm-12">
           <div class="form-group">
             <nb-card-header>Role</nb-card-header>
             <nb-select formControlName="role" [selected]="selected">
               <nb-option value="admin">Admin</nb-option>
               <nb-option value="user">User</nb-option>
-              <!-- <nb-option value="customer">Customer</nb-option> -->
+              <nb-option value="customer">Customer</nb-option>
             </nb-select>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">
