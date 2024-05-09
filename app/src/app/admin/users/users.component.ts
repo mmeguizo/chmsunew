@@ -73,9 +73,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     activeModal.componentInstance.buttonTxt = "add";
     activeModal.componentInstance.action = "add";
     activeModal.componentInstance.updateUser = false;
-    activeModal.componentInstance.userData = {
+    activeModal.componentInstance.DocumentData = {
       endpoint: "post",
       apiName: "addUser",
+      model: "user",
     };
     //
     activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {

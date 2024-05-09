@@ -92,6 +92,7 @@ import { OverlayModule } from "@angular/cdk/overlay";
 import { PlatformModule } from "@angular/cdk/platform";
 import { ObserversModule } from "@angular/cdk/observers";
 import { PortalModule } from "@angular/cdk/portal";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 const materialModules = [
   MatFormFieldModule,
@@ -204,6 +205,7 @@ const MODULES = [
     NbRadioModule,
     RouterModule,
     // DataTablesModule,
+    NgbModule,
     ...MODULES,
     ...materialModules,
   ],

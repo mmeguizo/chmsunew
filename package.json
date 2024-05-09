@@ -1,5 +1,5 @@
 {
-  "name": "akeem_services",
+  "name": "chmsu-idm",
   "version": "1.0.0",
   "description": "Master App Template for future project releases",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://TinkerTechInc@bitbucket.org/tinkertechteam/akeem_services.git"
+    "url": "git+https://github.com/mmeguizo/chmsu-idm.git"
   },
   "keywords": [
     "angular",
@@ -22,9 +22,9 @@
   "author": "mark oliver meguizo",
   "license": "ISC",
   "bugs": {
-    "url": "https://bitbucket.org/tinkertechteam/akeem_services/issues"
+    "url": "https://github.com/mmeguizo/chmsu-idm.git/issues"
   },
-  "homepage": "https://bitbucket.org/tinkertechteam/akeem_services#readme",
+  "homepage": "https://github.com/mmeguizo/chmsu-idm.git#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

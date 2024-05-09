@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  OnDestroy,
-} from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "../../@core/services/auth.service";
 import { UserService } from "../../@core/services/user.service";
@@ -13,7 +7,9 @@ import { takeUntil } from "rxjs/operators";
 import { CustomerService } from "../../@core/services/customer.service";
 import { FormBuilder, Validators } from "@angular/forms";
 import { log } from "console";
-
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { DepartmentComponent } from "../department-modal/department.component";
+import { DepartmentService } from "../../@core/services/department.service";
 @Component({
   selector: "ngx-users-modal",
   templateUrl: "./users-modal.component.html",
@@ -33,13 +29,17 @@ export class UsersModalComponent implements OnInit {
   public updateUser: Boolean;
   selected: String;
   eyeIcon: string = "eye-off-outline";
+  department: any;
 
   constructor(
     public auth: AuthService,
     public user: UserService,
     public customer: CustomerService,
     public activeModal: NgbActiveModal,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public ngbModal: NgbModal,
+    public department_modal: DepartmentComponent,
+    private documentService: DepartmentService
   ) {
     this.createForm();
   }
@@ -47,6 +47,16 @@ export class UsersModalComponent implements OnInit {
   ngOnInit(): void {
     this.buttonTxt === "update" ? this.getUser(this.userData.id) : "";
     this.showpassword = false;
+    this.getAllDepartment();
+  }
+  getAllDepartment() {
+    this.documentService
+      .getRoute("get", "department", "getAllDepartment")
+      .pipe(takeUntil(this.getSubscription))
+      .subscribe((data: any) => {
+        console.log({ getAllDept: data });
+        this.department = data.department;
+      });
   }
 
   createForm() {
@@ -132,5 +142,21 @@ export class UsersModalComponent implements OnInit {
 
   editDept(e: string) {
     console.log("edit dept " + e);
+    if (e === "editDept") {
+      const activeModal = this.ngbModal.open(DepartmentComponent, {
+        size: "medium",
+        container: "nb-layout",
+        windowClass: "min_height",
+      });
+      activeModal.componentInstance.buttonStatus = "success";
+      activeModal.componentInstance.buttonTxt = "add";
+      activeModal.componentInstance.action = "add";
+      activeModal.componentInstance.updateUser = false;
+      activeModal.componentInstance.DocumentData = {
+        endpoint: "post",
+        apiName: "addUser",
+        model: "department",
+      };
+    }
   }
 }

@@ -29,6 +29,9 @@ module.exports = (router) => {
   });
 
   router.post("/findById", (req, res) => {
+    console.log("finding user");
+    console.log(req.body);
+
     User.findOne({ id: req.body.id }, function (err, user) {
       if (err) {
         res.json({ success: false, message: err }); // Return error message
@@ -44,12 +47,12 @@ module.exports = (router) => {
   });
 
   router.post("/addUser", (req, res) => {
-    const { email, username, password, confirm } = req.body;
+    const { email, username, password, confirm, department } = req.body;
     if (!email || !username || !password || password !== confirm) {
       return res.json({
         success: false,
         message:
-          "You must provide an email, username, password and matching password",
+          "You must provide an email, username, department, password and matching password",
       });
     }
 

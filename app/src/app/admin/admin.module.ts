@@ -41,6 +41,9 @@ import { UploadsComponent } from "../shared/uploads/uploads.component";
 import { StatusCardComponent } from "./status-card/status-card.component";
 import { ObjectivesComponent } from "./objectives/objectives.component";
 import { Ng2SmartTableModule } from "ng2-smart-table";
+import { DepartmentComponent } from "../shared/department-modal/department.component";
+import { addDocumentComponent } from "../shared/add-document-modal/add-document.component";
+
 const NB_MODULES = [
   NbLayoutModule,
   NbMenuModule,
@@ -88,15 +91,19 @@ const NB_MODULES = [
     CustomersComponent,
     UpdateProfileComponent,
     UsersModalComponent,
+    addDocumentComponent,
     CustomerModalComponent,
     FilesComponent,
     UploadsComponent,
     StatusCardComponent,
     ObjectivesComponent,
+    DepartmentComponent,
   ],
   entryComponents: [
     UpdateProfileComponent,
     UsersModalComponent,
+    addDocumentComponent,
+    DepartmentComponent,
     CustomerModalComponent,
     FilesComponent,
     UploadsComponent,
@@ -104,10 +111,13 @@ const NB_MODULES = [
   exports: [],
   providers: [
     UsersModalComponent,
+    addDocumentComponent,
+    DepartmentComponent,
     UpdateProfileComponent,
     CustomerModalComponent,
     FilesComponent,
     UploadsComponent,
+    DepartmentComponent,
   ],
 })
 export class AdminModule {}

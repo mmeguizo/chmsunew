@@ -1,0 +1,45 @@
+<nb-card>
+  <nb-card-header> {{ action | titlecase }} User </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form" (submit)="executeAction(form)">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="inputFirstName" class="label">Department</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="inputFirstName"
+              [status]="
+                form?.get('department').touched &&
+                form.controls['department'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Department"
+              formControlName="department"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button type="submit" nbButton [status]="buttonStatus" outline>
+            {{ buttonTxt | titlecase }}
+          </button>
+          &nbsp;
+          <button
+            type="button"
+            nbButton
+            status="danger"
+            (click)="closeModal()"
+            outline
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
