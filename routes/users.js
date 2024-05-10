@@ -11,9 +11,12 @@ module.exports = (router) => {
     // Search database for all blog posts
     User.find(
       { deleted: false },
-      { id: 1, email: 1, username: 1, role: 1, status: 1 },
+      { id: 1, email: 1, username: 1, department: 1, role: 1, status: 1 },
       (err, user) => {
         // Check if error was found or not
+
+        console.log(user);
+
         if (err) {
           res.json({ success: false, message: err }); // Return error message
         } else {
@@ -47,8 +50,16 @@ module.exports = (router) => {
   });
 
   router.post("/addUser", (req, res) => {
+    console.log(req.body);
+
     const { email, username, password, confirm, department } = req.body;
-    if (!email || !username || !password || password !== confirm) {
+    if (
+      !email ||
+      !username ||
+      !password ||
+      !department ||
+      password !== confirm
+    ) {
       return res.json({
         success: false,
         message:
@@ -61,6 +72,7 @@ module.exports = (router) => {
       email: req.body.email.toLowerCase(),
       username: req.body.username.toLowerCase(),
       password: req.body.password,
+      department: req.body.department,
       // role: req.body.role.toLowerCase(),
     };
 
@@ -69,7 +81,7 @@ module.exports = (router) => {
         res.json({
           success: true,
           message: "This user is successfully Registered ",
-          data: { email: data.email, username: data.username },
+          data: { email: data.email, username: data.username, department },
         });
       })
       .catch((err) => {

@@ -43,6 +43,7 @@ import { ObjectivesComponent } from "./objectives/objectives.component";
 import { Ng2SmartTableModule } from "ng2-smart-table";
 import { DepartmentComponent } from "../shared/department-modal/department.component";
 import { addDocumentComponent } from "../shared/add-document-modal/add-document.component";
+import { ResearchComponent } from './research/research.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -98,6 +99,7 @@ const NB_MODULES = [
     StatusCardComponent,
     ObjectivesComponent,
     DepartmentComponent,
+    ResearchComponent,
   ],
   entryComponents: [
     UpdateProfileComponent,

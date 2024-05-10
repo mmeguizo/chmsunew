@@ -95,7 +95,8 @@ module.exports = (router) => {
       {
         id: data.id,
       },
-      (err, department) => {
+      (err, results) => {
+        console.log(results);
         if (err) {
           res.json({
             success: false,
@@ -105,7 +106,7 @@ module.exports = (router) => {
           res.json({
             success: true,
             message: " Successfully Deleted the Department",
-            data: department,
+            data: results,
           });
         }
       }
@@ -176,32 +177,6 @@ module.exports = (router) => {
       }
     );
   });
-
-  // router.put("/updateDepartment", async (req, res) => {
-  //   let data = req.body;
-  //   let departmentData = {};
-  //   Department.findOneAndUpdate(
-  //     { id: data.id },
-  //     departmentData,
-  //     { upsert: true },
-  //     (err, response) => {
-  //       if (err) return res.json({ success: false, message: err.message });
-  //       if (response) {
-  //         res.json({
-  //           success: true,
-  //           message: "Department Information has been updated!",
-  //           data: response,
-  //         });
-  //       } else {
-  //         res.json({
-  //           success: true,
-  //           message: "No Department has been modified!",
-  //           data: response,
-  //         });
-  //       }
-  //     }
-  //   );
-  // });
 
   router.put("/updateDepartment", async (req, res) => {
     let { id, department } = req.body;

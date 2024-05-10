@@ -5,7 +5,7 @@ import { UserService } from "../../@core/services/user.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { CustomerService } from "../../@core/services/customer.service";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { log } from "console";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { DepartmentComponent } from "../department-modal/department.component";
@@ -98,36 +98,66 @@ export class UsersModalComponent implements OnInit {
       .getRoute(this.userData.endpoint, this.userData.apiName, { id: id })
       .pipe(takeUntil(this.getSubscription))
       .subscribe((data: any) => {
-        this.selected = data.user.role;
+        this.selected = data.user.department;
+
+        console.log(data.user.department);
+
         this.form = this.formBuilder.group({
           username: [data.user.username, [Validators.required]],
           email: [data.user.email, [Validators.required]],
           // role:     [data.user.role, [Validators.required]],
           password: ["", [Validators.required]],
+          department: new FormControl(data.user.department),
           confirm: ["", [Validators.required]],
         });
+        this.form.get("department").setValue(data.user.department);
         // data.success ? [this.passEntry.emit(data) , this.activeModal.close()] : this.passEntry.emit(data)
       });
   }
 
+  /*
+   <nb-select
+              formControlName="department"
+              (ngModelChange)="editDept($event)"
+              [selected]="selected"
+            >
+              <nb-option value="editDept" style="color: greenyellow">
+                --Manage/Edit Dept--
+              </nb-option>
+              <nb-option
+                *ngFor="let dept of department"
+                [value]="dept.department"
+                [nbTooltip]="dept.department | titlecase"
+                nbTooltipPlacement="top"
+                >{{
+                  (dept.department.length > 20
+                    ? (dept.department | slice : 0 : 20) + "..."
+                    : dept.department
+                  ) | titlecase
+                }}</nb-option
+              >
+            </nb-select>
+
+  */
+
   executeAction(form) {
     console.log(this.form.value);
 
-    // this.form.value.id = this.userData.id;
-    // this.user
-    //   .getRoute(
-    //     this.userData.endpoint2
-    //       ? this.userData.endpoint2
-    //       : this.userData.endpoint,
-    //     this.userData.apiName2 ? this.userData.apiName2 : this.userData.apiName,
-    //     this.form.value
-    //   )
-    //   .pipe(takeUntil(this.getSubscription))
-    //   .subscribe((data: any) => {
-    //     data.success
-    //       ? [this.passEntry.emit(data), this.activeModal.close()]
-    //       : this.passEntry.emit(data);
-    //   });
+    this.form.value.id = this.userData.id || "";
+    this.user
+      .getRoute(
+        this.userData.endpoint2
+          ? this.userData.endpoint2
+          : this.userData.endpoint,
+        this.userData.apiName2 ? this.userData.apiName2 : this.userData.apiName,
+        this.form.value
+      )
+      .pipe(takeUntil(this.getSubscription))
+      .subscribe((data: any) => {
+        data.success
+          ? [this.passEntry.emit(data), this.activeModal.close()]
+          : this.passEntry.emit(data);
+      });
   }
 
   showPassword() {
@@ -157,6 +187,11 @@ export class UsersModalComponent implements OnInit {
         apiName: "addUser",
         model: "department",
       };
+      activeModal.componentInstance.passEntry.subscribe(
+        (receivedEntry: any) => {
+          receivedEntry && this.getAllDepartment();
+        }
+      );
     }
   }
 }

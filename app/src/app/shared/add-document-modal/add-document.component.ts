@@ -20,16 +20,16 @@ export class addDocumentComponent implements OnInit {
   @Output() passEntry: EventEmitter<string> = new EventEmitter<string>();
   private getSubscription = new Subject<void>();
 
-  private DocumentData: any;
+  private DepartmentData: any;
   public buttonStatus: String = "primary";
   public buttonTxt: String = "action";
   public action: String = "action to perform in";
   public form: any;
   public showpassword: Boolean = false;
   public id: String;
-  public updateDocument: Boolean;
   selected: String;
   eyeIcon: string = "eye-off-outline";
+  public passedData: any;
 
   constructor(
     public auth: AuthService,
@@ -40,16 +40,21 @@ export class addDocumentComponent implements OnInit {
     public ngbModal: NgbModal,
     public department_modal: DepartmentComponent,
     private documentService: DepartmentService
-  ) {
-    this.createForm();
+  ) {}
+
+  ngOnInit(): void {
+    console.log("add document component", this.DepartmentData);
+    this.createForm(this.passedData?.department || "");
   }
 
-  ngOnInit(): void {}
-
-  createForm() {
+  createForm(string: any) {
     this.form = this.formBuilder.group({
-      department: ["", [Validators.required]],
+      department: [string || "", [Validators.required]],
     });
+    //initializing form blank if nothing is passed
+    if (!string) {
+      this.form.get("department")?.setErrors(null);
+    }
   }
 
   closeModal() {
@@ -57,12 +62,21 @@ export class addDocumentComponent implements OnInit {
   }
 
   executeAction(form) {
+    this.form.value.id = this.passedData ? this.passedData.id : null;
     console.log(this.form.value);
+
+    console.log(
+      this.DepartmentData.endpoint,
+      this.DepartmentData.model,
+      this.DepartmentData.apiName,
+      this.form.value
+    );
+
     this.documentService
       .getRoute(
-        this.DocumentData.endpoint,
-        this.DocumentData.model,
-        this.DocumentData.apiName,
+        this.DepartmentData.endpoint,
+        this.DepartmentData.model,
+        this.DepartmentData.apiName,
         this.form.value
       )
       .pipe(takeUntil(this.getSubscription))
