@@ -26,6 +26,7 @@ export class UsersModalComponent implements OnInit {
   public form: any;
   public showpassword: Boolean = false;
   public id: String;
+  public _id: String;
   public updateUser: Boolean;
   selected: String;
   eyeIcon: string = "eye-off-outline";
@@ -99,9 +100,7 @@ export class UsersModalComponent implements OnInit {
       .pipe(takeUntil(this.getSubscription))
       .subscribe((data: any) => {
         this.selected = data.user.department;
-
         console.log(data.user.department);
-
         this.form = this.formBuilder.group({
           username: [data.user.username, [Validators.required]],
           email: [data.user.email, [Validators.required]],
@@ -141,15 +140,12 @@ export class UsersModalComponent implements OnInit {
   */
 
   executeAction(form) {
-    console.log(this.form.value);
-
+    this.form.value._id = this.userData._id || "";
     this.form.value.id = this.userData.id || "";
     this.user
       .getRoute(
-        this.userData.endpoint2
-          ? this.userData.endpoint2
-          : this.userData.endpoint,
-        this.userData.apiName2 ? this.userData.apiName2 : this.userData.apiName,
+        this.userData.endpoint2 || this.userData.endpoint,
+        this.userData.apiName2 || this.userData.apiName,
         this.form.value
       )
       .pipe(takeUntil(this.getSubscription))
@@ -171,7 +167,6 @@ export class UsersModalComponent implements OnInit {
   }
 
   editDept(e: string) {
-    console.log("edit dept " + e);
     if (e === "editDept") {
       const activeModal = this.ngbModal.open(DepartmentComponent, {
         size: "medium",

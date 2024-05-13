@@ -4,10 +4,9 @@ import { Component, OnInit } from "@angular/core";
 import { UserService } from "../../@core/services/user.service";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { CustomerService } from "../../@core/services/customer.service";
-import { log } from "console";
 import { NbThemeService } from "@nebular/theme";
 import { takeWhile } from "rxjs/operators";
+import { DepartmentService } from "../../@core/services/department.service";
 
 interface CardSettings {
   title: string;
@@ -42,39 +41,13 @@ export class DashboardComponent implements OnInit {
   private getSubscription = new Subject<void>();
 
   lightCard: CardSettings;
-  rollerShadesCard: CardSettings;
-  // lightCard: CardSettings = {
-  //   title: "Users",
-  //   iconClass: "nb-person",
-  //   type: "primary",
-  //   on: true,
-  // };
-  // rollerShadesCard: CardSettings = {
-  //   title: "Roller Shades",
-  //   iconClass: "nb-roller-shades",
-  //   type: "success",
-  // };
-  // wirelessAudioCard: CardSettings = {
-  //   title: "Wireless Audio",
-  //   iconClass: "nb-audio",
-  //   type: "info",
-  // };
-  // coffeeMakerCard: CardSettings = {
-  //   title: "Coffee Maker",
-  //   iconClass: "nb-coffee-maker",
-  //   type: "warning",
-  // };
+  departmentCard: CardSettings;
 
   private alive = true;
 
   statusCards: string;
 
-  commonStatusCardsSet: CardSettings[] = [
-    // this.lightCard,
-    // this.rollerShadesCard,
-    // this.wirelessAudioCard,
-    // this.coffeeMakerCard,
-  ];
+  commonStatusCardsSet: CardSettings[] = [];
 
   statusCardsByThemes: {
     default: CardSettings[];
@@ -85,8 +58,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     public user: UserService,
-    public customer: CustomerService,
-    private themeService: NbThemeService
+    private themeService: NbThemeService,
+    private DepartmentService: DepartmentService
   ) {
     this.date = new Date();
     this.setCurrentTime();
@@ -95,7 +68,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllUsers();
-    // this.getAllCustomer();
+    this.getAllDepartments();
   }
   private updateTime() {
     setInterval(() => {
@@ -122,70 +95,70 @@ export class DashboardComponent implements OnInit {
       .pipe(takeUntil(this.getSubscription))
       .subscribe((data: any) => {
         this.userData = data.user.length;
-        this.setIconData(data.user.length);
-
-        this.themeService
-          .getJsTheme()
-          .pipe(takeWhile(() => this.alive))
-          .subscribe((theme) => {
-            this.statusCards = this.statusCardsByThemes[theme.name];
-          });
+        this.lightCard = this.setIconData(
+          "Users",
+          data.user.length,
+          this.lightCard,
+          "nb-person",
+          "primary"
+        );
+        this.setDashboard(this.lightCard, "warning");
+        this.RunthemeService();
       });
   }
 
-  setIconData(count) {
-    this.lightCard = {
-      title: `Users ${count}`,
-      iconClass: "nb-person",
-      type: "primary",
-      on: "/admin/users",
-    };
+  getAllDepartments() {
+    this.DepartmentService.getRoute("get", "department", "getAllDepartment")
+      .pipe(takeUntil(this.getSubscription))
+      .subscribe((data: any) => {
+        console.log(data.department);
 
-    this.rollerShadesCard = {
-      title: "Roller Shades",
-      iconClass: "nb-roller-shades",
-      type: "success",
-      on: "",
-    };
+        // this.employees = data.employees.length;
+        this.departmentCard = this.setIconData(
+          "Departments",
+          data.department.length,
+          this.departmentCard,
+          "fas fa-building",
+          "success"
+        );
+        this.setDashboard(this.departmentCard, "warning");
+        this.RunthemeService();
+      });
+  }
 
-    this.commonStatusCardsSet.push(this.lightCard);
-    this.commonStatusCardsSet.push(this.rollerShadesCard);
+  setIconData(
+    title: string,
+    count: number,
+    variable: any,
+    iconClass: string,
+    type: string
+  ) {
+    return (variable = {
+      title: `${title} ${count}`,
+      iconClass: iconClass,
+      type: type,
+      on: `/admin/${title.toLowerCase() || ""}`,
+    });
+  }
 
+  setDashboard(dashboardCard: any, type: string) {
+    this.commonStatusCardsSet.push(dashboardCard);
     this.statusCardsByThemes = {
       default: this.commonStatusCardsSet,
-      cosmic: this.commonStatusCardsSet,
-      corporate: [
-        {
-          ...this.lightCard,
-          type: "warning",
-        },
-        {
-          ...this.rollerShadesCard,
-          type: "primary",
-        },
-        // {
-        //   ...this.wirelessAudioCard,
-        //   type: "danger",
-        // },
-        // {
-        //   ...this.coffeeMakerCard,
-        //   type: "info",
-        // },
-      ],
+      cosmic: [],
+      corporate: [],
       dark: this.commonStatusCardsSet,
     };
   }
-  // getAllCustomer() {
-  //   this.customer
-  //     .getAllCustomers()
-  //     .pipe(takeUntil(this.getSubscription))
-  //     .subscribe((data: any) => {
-  //       console.log("getAllCustomer");
-  //       console.log(data);
 
-  //       this.customerData = data.customer.length;
-  //     });
-  // }
+  RunthemeService() {
+    this.themeService
+      .getJsTheme()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((theme) => {
+        this.statusCards = this.statusCardsByThemes[theme.name];
+      });
+  }
 
   ngOnDestroy() {
     this.getSubscription.unsubscribe();

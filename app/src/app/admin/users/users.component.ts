@@ -101,6 +101,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   updateUser(data) {
+    console.log(data);
+
     const activeModal = this.ngbModal.open(UsersModalComponent, {
       size: "sm",
       container: "nb-layout",
@@ -117,6 +119,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       apiName2: "updateUser",
       endpoint2: "put",
       id: data.id,
+      _id: data._id,
       data: data,
     };
     activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {

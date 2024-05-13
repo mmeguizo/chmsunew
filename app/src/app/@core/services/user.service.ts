@@ -33,7 +33,9 @@ export class UserService {
     this.authToken = token;
   }
 
-  getRoute(endpoint, apiName, data) {
+  getRoute(endpoint: any, apiName: any, data: any) {
+    console.log("getRoute", { endpoint, apiName, data });
+
     this.createAuthenticationHeaders();
     if (endpoint == "put") {
       return this.http.put(this.cs.domain + `/users/${apiName}`, data, {

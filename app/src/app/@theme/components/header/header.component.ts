@@ -114,7 +114,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   changeTheme(themeName: string = "default") {
-    console.log(themeName);
     this.themeService.changeTheme(themeName);
   }
 
