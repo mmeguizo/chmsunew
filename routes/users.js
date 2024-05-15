@@ -11,7 +11,7 @@ module.exports = (router) => {
     // Search database for all blog posts
     User.find(
       { deleted: false },
-      { id: 1, email: 1, username: 1, role: 1, status: 1 },
+      { id: 1, email: 1, username: 1, department: 1, role: 1, status: 1 },
       (err, user) => {
         // Check if error was found or not
         if (err) {
@@ -48,7 +48,13 @@ module.exports = (router) => {
 
   router.post("/addUser", (req, res) => {
     const { email, username, password, confirm, department } = req.body;
-    if (!email || !username || !password || password !== confirm) {
+    if (
+      !email ||
+      !username ||
+      !password ||
+      !department ||
+      password !== confirm
+    ) {
       return res.json({
         success: false,
         message:
@@ -61,6 +67,7 @@ module.exports = (router) => {
       email: req.body.email.toLowerCase(),
       username: req.body.username.toLowerCase(),
       password: req.body.password,
+      department: req.body.department,
       // role: req.body.role.toLowerCase(),
     };
 
@@ -69,7 +76,7 @@ module.exports = (router) => {
         res.json({
           success: true,
           message: "This user is successfully Registered ",
-          data: { email: data.email, username: data.username },
+          data: { email: data.email, username: data.username, department },
         });
       })
       .catch((err) => {
@@ -185,82 +192,32 @@ module.exports = (router) => {
   });
 
   router.put("/updateUser", async (req, res) => {
-    let data = req.body;
-    let userData = {};
+    console.log("updateUser", req.body);
+    const { username, email, department, id } = req.body;
 
-    if (data.changePassword) {
-      let checkPassword = await bcrypt.compare(
-        data.old_password,
-        docs.password
-      );
+    User.findOneAndUpdate(
+      { id: id },
+      { username, email, department },
+      { upsert: false },
+      (err, response) => {
+        console.log("updateUser", response);
 
-      if (!checkPassword) {
-        res.json({
-          success: false,
-          message: "Old Password Incorrect: " + !checkPassword,
-        });
-      } else {
-        hash
-          .encryptPassword(data.new_password)
-          .then((hash) => {
-            userData.role = data.role;
-            userData.username = data.username;
-            userData.email = data.email;
-            userData.password = hash;
-            changedPassword = true;
-            User.findOneAndUpdate(
-              { id: data.id },
-              userData,
-              { upsert: true },
-              (err, response) => {
-                if (err)
-                  return res.json({ success: false, message: err.message });
-                if (response) {
-                  res.json({
-                    success: true,
-                    message: "User Information has been updated!",
-                    data: response,
-                  });
-                } else {
-                  res.json({
-                    success: true,
-                    message: "No User has been modified!",
-                    data: response,
-                  });
-                }
-              }
-            );
-          })
-          .catch((err) => {
-            console.log(err);
+        if (err) return res.json({ success: false, message: err.message });
+        if (response) {
+          res.json({
+            success: true,
+            message: "User Information has been updated!",
+            data: response,
           });
-      }
-    } else {
-      userData.role = data.role;
-      userData.username = data.username;
-      userData.email = data.email;
-      User.findOneAndUpdate(
-        { id: data.id },
-        userData,
-        { upsert: true },
-        (err, response) => {
-          if (err) return res.json({ success: false, message: err.message });
-          if (response) {
-            res.json({
-              success: true,
-              message: "User Information has been updated!",
-              data: response,
-            });
-          } else {
-            res.json({
-              success: true,
-              message: "No User has been modified!",
-              data: response,
-            });
-          }
+        } else {
+          res.json({
+            success: true,
+            message: "No User has been modified!",
+            data: response,
+          });
         }
-      );
-    }
+      }
+    );
   });
 
   router.put("/updateProfile", async (req, res) => {
@@ -321,6 +278,8 @@ module.exports = (router) => {
       }
     } else {
       const { username, email, profile_pic, id } = req.body;
+
+      console.log("updateProfile", req.body);
 
       User.findOneAndUpdate(
         { id: id },

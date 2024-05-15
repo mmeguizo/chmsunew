@@ -26,8 +26,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     "#",
     "username",
-    "email",
     "role",
+    "email",
+    "department",
     "status",
     "options",
   ];
@@ -73,7 +74,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     activeModal.componentInstance.buttonTxt = "add";
     activeModal.componentInstance.action = "add";
     activeModal.componentInstance.updateUser = false;
-    activeModal.componentInstance.DocumentData = {
+    activeModal.componentInstance.userData = {
       endpoint: "post",
       apiName: "addUser",
       model: "user",
@@ -99,7 +100,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateUser(id) {
+  updateUser(data) {
+    console.log(data);
+
     const activeModal = this.ngbModal.open(UsersModalComponent, {
       size: "sm",
       container: "nb-layout",
@@ -115,7 +118,9 @@ export class UsersComponent implements OnInit, OnDestroy {
       apiName: "findById",
       apiName2: "updateUser",
       endpoint2: "put",
-      id: id,
+      id: data.id,
+      _id: data._id,
+      data: data,
     };
     activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {
       receivedEntry.success

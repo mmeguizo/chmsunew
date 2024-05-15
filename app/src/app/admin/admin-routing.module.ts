@@ -5,6 +5,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { UsersComponent } from "./users/users.component";
 import { CustomersComponent } from "./customers/customers.component";
 import { ObjectivesComponent } from "./objectives/objectives.component";
+import { ResearchComponent } from "./research/research.component";
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
       { path: "dashboard", component: DashboardComponent },
       { path: "users", component: UsersComponent },
+      { path: "research", component: ResearchComponent },
       { path: "objectives", component: ObjectivesComponent },
     ],
   },

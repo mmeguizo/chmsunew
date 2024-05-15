@@ -72,15 +72,35 @@
             <nb-select
               formControlName="department"
               (ngModelChange)="editDept($event)"
-              selected="0"
+              [selected]="selected"
             >
               <nb-option value="editDept" style="color: greenyellow">
-                --Manage/Edit Dept. Names--
+                --Manage/Edit Dept--
               </nb-option>
-              <nb-option *ngFor="let dept of department" [value]="dept.id">{{
-                dept.department | titlecase
-              }}</nb-option>
+              <nb-option
+                *ngFor="let dept of department"
+                [value]="dept.department"
+                [nbTooltip]="dept.department | titlecase"
+                nbTooltipPlacement="top"
+                >{{
+                  (dept.department.length > 20
+                    ? (dept.department | slice : 0 : 20) + "..."
+                    : dept.department
+                  ) | titlecase
+                }}</nb-option
+              >
             </nb-select>
+
+            <!-- <div class="col-sm-12">
+          <div class="form-group">
+            <nb-card-header>Role</nb-card-header>
+            <nb-select formControlName="role" [selected]="selected">
+              <nb-option value="admin">Admin</nb-option>
+              <nb-option value="user">User</nb-option>
+              <nb-option value="customer">Customer</nb-option>
+            </nb-select>
+          </div>
+        </div> -->
           </div>
         </div>
       </div>
@@ -136,16 +156,6 @@
             ></nb-icon>
           </div>
         </div>
-        <!-- <div class="col-sm-12">
-          <div class="form-group">
-            <nb-card-header>Role</nb-card-header>
-            <nb-select formControlName="role" [selected]="selected">
-              <nb-option value="admin">Admin</nb-option>
-              <nb-option value="user">User</nb-option>
-              <nb-option value="customer">Customer</nb-option>
-            </nb-select>
-          </div>
-        </div> -->
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">

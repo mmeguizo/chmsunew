@@ -13,7 +13,7 @@
     "ng": "ng",
     "conventional-changelog": "conventional-changelog",
     "start": "ng serve",
-    "starter": "node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve",
+    "starter": "node --max_old_space_size=4048 ./node_modules/@angular/cli/bin/ng serve",
     "build": "ng build",
     "build:prod": "npm run build -- --configuration production --aot",
     "test": "ng test",

@@ -50,10 +50,6 @@
                 </td>
               </ng-container>
               <!-- Weight Column -->
-              <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef>Email</th>
-                <td mat-cell *matCellDef="let data">{{ data.email }}</td>
-              </ng-container>
 
               <ng-container matColumnDef="role">
                 <th mat-header-cell *matHeaderCellDef>Role</th>
@@ -62,6 +58,17 @@
                     >{{ data.role === "admin" ? "👨🏻‍💻" : "👨🏻‍💼" }}
                     {{ data.role | titlecase }}</span
                   >
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let data">{{ data.email }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef>Department</th>
+                <td mat-cell *matCellDef="let data">
+                  <code>{{ data.department | titlecase }}</code>
                 </td>
               </ng-container>
 
@@ -90,7 +97,7 @@
                         nbPopover="Update User"
                         nbPopoverTrigger="hint"
                         nbPopoverPlacement="bottom"
-                        (click)="updateUser(data.id)"
+                        (click)="updateUser(data)"
                         ><nb-icon id="updateUser" icon="edit-2"></nb-icon
                       ></nb-action>
                     </span>

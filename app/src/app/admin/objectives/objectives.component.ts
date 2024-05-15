@@ -1,24 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { CommonComponent } from "../../shared/common/common.component";
+import { AuthService } from "../../@core/services/auth.service";
 import { MatTableDataSource } from "@angular/material/table";
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: "Hydrogen", weight: 1.0079, symbol: "H" },
-  { position: 2, name: "Helium", weight: 4.0026, symbol: "He" },
-  { position: 3, name: "Lithium", weight: 6.941, symbol: "Li" },
-  { position: 4, name: "Beryllium", weight: 9.0122, symbol: "Be" },
-  { position: 5, name: "Boron", weight: 10.811, symbol: "B" },
-  { position: 6, name: "Carbon", weight: 12.0107, symbol: "C" },
-  { position: 7, name: "Nitrogen", weight: 14.0067, symbol: "N" },
-  { position: 8, name: "Oxygen", weight: 15.9994, symbol: "O" },
-  { position: 9, name: "Fluorine", weight: 18.9984, symbol: "F" },
-  { position: 10, name: "Neon", weight: 20.1797, symbol: "Ne" },
-];
+import { GoalService } from "../../@core/services/goal.service";
+import { addGoalComponent } from "../../shared/add-goal/add-goal.component";
 
 @Component({
   selector: "ngx-objectives",
@@ -26,35 +14,189 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ["./objectives.component.scss"],
 })
 export class ObjectivesComponent implements OnInit {
-  displayedColumns: string[] = ["position", "name", "weight", "symbol"];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = [
+    "#",
+    "goals",
+    "budget",
+    "createdBy",
+    "createdAt",
+    "options",
+  ];
+  dataSource: any;
 
-  constructor() {}
+  data: any;
+  loading = true;
 
-  ngOnInit(): void {}
+  private getGoalSubscription = new Subject<void>();
+  constructor(
+    public goal: GoalService,
+    public auth: AuthService,
+    public ngbModal: NgbModal,
+    public add_goal_modal: addGoalComponent
+  ) {}
+
+  ngOnInit() {
+    this.getGoals();
+  }
+
+  getGoals() {
+    this.goal
+      .getRoute("get", "goals", "getAllGoals")
+      .pipe(takeUntil(this.getGoalSubscription))
+      .subscribe((data: any) => {
+        this.data = data.goals;
+        console.log(this.data);
+        this.dataSource = new MatTableDataSource(data.goals);
+        this.loading = false;
+      });
+  }
+
+  addGoals() {
+    const activeModal = this.ngbModal.open(addGoalComponent, {
+      size: "sm",
+      container: "nb-layout",
+      windowClass: "min_height",
+      backdrop: "static",
+    });
+    activeModal.componentInstance.buttonStatus = "success";
+    activeModal.componentInstance.buttonTxt = "add";
+    activeModal.componentInstance.action = "add";
+    activeModal.componentInstance.updateGoal = false;
+    activeModal.componentInstance.goalData = {
+      endpoint: "post",
+      apiName: "addGoals",
+      model: "goals",
+    };
+    //
+    activeModal.componentInstance.passEntry.subscribe((receivedEntry: any) => {
+      receivedEntry.success
+        ? [
+            this.auth.makeToast(
+              "success",
+              `Adding ${receivedEntry.data?.goal}`,
+              receivedEntry.message
+            ),
+            this.getGoals(),
+          ]
+        : [
+            this.auth.makeToast(
+              "danger",
+              `Adding ${receivedEntry.data?.goal || "failed"}`,
+              receivedEntry.message
+            ),
+          ];
+    });
+  }
+
+  updateGoal(data: any) {
+    console.log(data);
+
+    const activeModal = this.ngbModal.open(addGoalComponent, {
+      size: "sm",
+      container: "nb-layout",
+      windowClass: "min_height",
+      backdrop: "static",
+    });
+    activeModal.componentInstance.buttonStatus = "success";
+    activeModal.componentInstance.buttonTxt = "update";
+    activeModal.componentInstance.action = "update";
+    activeModal.componentInstance.updateGoal = true;
+    activeModal.componentInstance.passedData = data;
+    activeModal.componentInstance.goalData = {
+      apiName: "updateGoals",
+      endpoint: "put",
+      model: "goals",
+      id: data.id,
+      _id: data._id,
+      data: data,
+    };
+    activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {
+      receivedEntry.success
+        ? [
+            this.auth.makeToast(
+              "success",
+              `Updating ${receivedEntry.data?.username}`,
+              receivedEntry.message
+            ),
+            this.getGoals(),
+          ]
+        : [
+            this.auth.makeToast(
+              "danger",
+              `Updating ${receivedEntry.data?.username || "failed"}`,
+              receivedEntry.message
+            ),
+          ];
+    });
+  }
+  deleteGoal(person) {
+    const activeModal = this.ngbModal.open(CommonComponent, {
+      size: "sm",
+      container: "nb-layout",
+      windowClass: "min_height",
+      backdrop: "static",
+    });
+    activeModal.componentInstance.username = person.username;
+    activeModal.componentInstance.id = person.id;
+    activeModal.componentInstance.frontEnddata = person;
+    activeModal.componentInstance.model = "user";
+    activeModal.componentInstance.endpointType = "put";
+    activeModal.componentInstance.apiName = "setInactiveGoal";
+    activeModal.componentInstance.headerTitle = "Delete Goal";
+    activeModal.componentInstance.bodyContent = "Deleting";
+    activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {
+      receivedEntry.success
+        ? [
+            this.auth.makeToast(
+              "success",
+              `Deleting ${receivedEntry.data?.username || person.username}`,
+              receivedEntry.message
+            ),
+            this.getGoals(),
+          ]
+        : [
+            this.auth.makeToast(
+              "danger",
+              `Deleting ${receivedEntry.data?.username || "failed"}`,
+              receivedEntry.message
+            ),
+          ];
+    });
+  }
+  changeStatus(person) {
+    const activeModal = this.ngbModal.open(CommonComponent, {
+      size: "sm",
+      container: "nb-layout",
+      windowClass: "min_height",
+      backdrop: "static",
+    });
+    activeModal.componentInstance.username = person.username;
+    activeModal.componentInstance.id = person.id;
+    activeModal.componentInstance.frontEnddata = person;
+    activeModal.componentInstance.model = "user";
+    activeModal.componentInstance.endpointType = "put";
+    activeModal.componentInstance.apiName = "changeGoalStatus";
+    activeModal.componentInstance.headerTitle = "Status Change";
+    activeModal.componentInstance.bodyContent = "Changing Status of";
+    activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {
+      receivedEntry && [
+        this.auth.makeToast(
+          "success",
+          "Changing Status Success",
+          `Status change ${person.username}`
+        ),
+        this.getGoals(),
+      ];
+    });
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.getGoalSubscription.unsubscribe();
+  }
 }
-
-/*
-   {
-        "_id": "6639bb085ac4e9dc270d5478",
-        "id": "ef0edb85-5c4d-496c-9d51-7890b1cf208f",
-        "email": "jeeps@chmsu.edu.ph",
-        "username": "jeeps",
-        "role": "user",
-        "status": "active"
-    },
-    {
-        "_id": "66399d49a645be83b29df38d",
-        "id": "8c7ba283-4390-4d45-bc78-fdda284cc617",
-        "email": "testerx@chmsu.edu.ph",
-        "username": "testerx",
-        "role": "user",
-        "status": "active"
-    },
-
-*/

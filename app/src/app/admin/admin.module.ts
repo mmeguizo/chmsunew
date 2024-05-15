@@ -43,6 +43,8 @@ import { ObjectivesComponent } from "./objectives/objectives.component";
 import { Ng2SmartTableModule } from "ng2-smart-table";
 import { DepartmentComponent } from "../shared/department-modal/department.component";
 import { addDocumentComponent } from "../shared/add-document-modal/add-document.component";
+import { ResearchComponent } from "./research/research.component";
+import { addGoalComponent } from "../shared/add-goal/add-goal.component";
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -91,6 +93,7 @@ const NB_MODULES = [
     CustomersComponent,
     UpdateProfileComponent,
     UsersModalComponent,
+    addGoalComponent,
     addDocumentComponent,
     CustomerModalComponent,
     FilesComponent,
@@ -98,10 +101,12 @@ const NB_MODULES = [
     StatusCardComponent,
     ObjectivesComponent,
     DepartmentComponent,
+    ResearchComponent,
   ],
   entryComponents: [
     UpdateProfileComponent,
     UsersModalComponent,
+    addGoalComponent,
     addDocumentComponent,
     DepartmentComponent,
     CustomerModalComponent,
@@ -111,6 +116,7 @@ const NB_MODULES = [
   exports: [],
   providers: [
     UsersModalComponent,
+    addGoalComponent,
     addDocumentComponent,
     DepartmentComponent,
     UpdateProfileComponent,

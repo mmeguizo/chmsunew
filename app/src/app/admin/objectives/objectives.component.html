@@ -1,40 +1,117 @@
-<mat-form-field appearance="standard">
-  <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
-</mat-form-field>
+<div class="row">
+  <div class="col-sm-12">
+    <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <nb-card-header>
+        <div class="action-groups-header" style="float: left; clear: both">
+          Goal Lists
+        </div>
+        <nb-actions size="medium" style="float: right; font-size: 10px">
+          <nb-action
+            color="success"
+            nbPopover="Add new Goals"
+            nbPopoverTrigger="hint"
+            nbPopoverPlacement="bottom"
+            (click)="addGoals()"
+          >
+            <nb-icon id="addGoal" icon="bullseye" pack="fa"></nb-icon>
+          </nb-action>
+        </nb-actions>
+      </nb-card-header>
+      <nb-card-body
+        style="height: 200pxpx; min-height: 580px; padding-bottom: 31px"
+      >
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="clear"></div>
+            <mat-form-field appearance="standard">
+              <mat-label>Filter</mat-label>
+              <input
+                matInput
+                (keyup)="applyFilter($event)"
+                placeholder="Ex. goal name"
+                #input
+              />
+            </mat-form-field>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <!-- Position Column -->
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef>No.</th>
-    <td mat-cell *matCellDef="let element">{{ element.position }}</td>
-  </ng-container>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <!-- Position Column -->
+              <ng-container matColumnDef="#">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let data; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-  </ng-container>
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="goals">
+                <th mat-header-cell *matHeaderCellDef>Goals</th>
+                <td mat-cell *matCellDef="let data">
+                  {{ data.goals | titlecase }}
+                </td>
+              </ng-container>
+              <!-- Weight Column -->
 
-  <!-- Weight Column -->
-  <ng-container matColumnDef="weight">
-    <th mat-header-cell *matHeaderCellDef>Weight</th>
-    <td mat-cell *matCellDef="let element">{{ element.weight }}</td>
-  </ng-container>
+              <ng-container matColumnDef="budget">
+                <th mat-header-cell *matHeaderCellDef>Budget</th>
+                <td mat-cell *matCellDef="let data">
+                  &#x20B1; {{ data.budget | numberWithCommas }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="createdBy">
+                <th mat-header-cell *matHeaderCellDef>Created By</th>
+                <td mat-cell *matCellDef="let data">
+                  {{ data.users.username | titlecase }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                <td mat-cell *matCellDef="let data">
+                  {{ data.createdAt | date : "mediumDate" }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef>Options</th>
+                <td mat-cell *matCellDef="let data">
+                  <div style="display: flex">
+                    <span>
+                      <nb-action
+                        nbPopover="Update Goal"
+                        nbPopoverTrigger="hint"
+                        nbPopoverPlacement="bottom"
+                        (click)="updateGoal(data)"
+                        ><nb-icon id="updateGoal" icon="edit-2"></nb-icon
+                      ></nb-action>
+                    </span>
+                    &nbsp; &nbsp;
+                    <span>
+                      <nb-action
+                        nbPopover="Delete Goal"
+                        nbPopoverTrigger="hint"
+                        nbPopoverPlacement="bottom"
+                        (click)="deleteGoal(data)"
+                        ><nb-icon
+                          id="deleteGoal"
+                          icon="trash-2-outline"
+                        ></nb-icon
+                      ></nb-action>
+                    </span>
+                  </div>
+                </td>
+              </ng-container>
 
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="symbol">
-    <th mat-header-cell *matHeaderCellDef>Symbol</th>
-    <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
-  </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-  <!-- Row shown when there is no matching data. -->
-  <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">
-      No data matching the filter "{{ input.value }}"
-    </td>
-  </tr>
-</table>
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">
+                  No data matching the filter "{{ input.value }}"
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

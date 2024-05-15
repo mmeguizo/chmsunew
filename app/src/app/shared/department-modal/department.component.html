@@ -56,7 +56,12 @@
                         nbPopover="Update Department"
                         nbPopoverTrigger="hint"
                         nbPopoverPlacement="bottom"
-                        (click)="updateDocument(data.id)"
+                        (click)="
+                          updateDepartment({
+                            id: data.id,
+                            department: data.department
+                          })
+                        "
                         ><nb-icon id="updateUser" icon="edit-2"></nb-icon
                       ></nb-action>
                     </span>
@@ -66,7 +71,12 @@
                         nbPopover="Delete Department"
                         nbPopoverTrigger="hint"
                         nbPopoverPlacement="bottom"
-                        (click)="deleteDocument(data.id)"
+                        (click)="
+                          deleteDepartment({
+                            id: data.id,
+                            department: data.department
+                          })
+                        "
                         ><nb-icon
                           id="deleteUser"
                           icon="trash-2-outline"

@@ -22,6 +22,8 @@ import {
   NbToastrConfig,
 } from "@nebular/theme";
 
+import { catchError } from "rxjs/operators";
+
 @Injectable({
   providedIn: "root",
 })
@@ -142,10 +144,14 @@ export class AuthService {
 
   // Function to login user
   login(user) {
-    // return this.http.post('/authentication/login', user)
-    return this.http.post(this.domain + "/authentication/login", user);
+    return this.http.post(this.domain + "/authentication/login", user).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.log(error);
+        console.error(error);
+        return throwError(error);
+      })
+    );
   }
-
   logout() {
     this.authToken = null;
     this.user = null;

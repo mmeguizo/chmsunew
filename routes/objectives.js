@@ -1,79 +1,86 @@
-const Department = require("../models/department"); // Import Department Model Schema
+const Objectives = require("../models/objective");
 const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
 
 module.exports = (router) => {
-  router.get("/getAllDepartment", (req, res) => {
+  router.get("/getAllObjectives", (req, res) => {
     // Search database for all blog posts
-    Department.find(
+    Objectives.find(
       { deleted: false },
-      { id: 1, department: 1, status: 1, deleted: 1 },
-      (err, department) => {
+      { id: 1, Objectives: 1, status: 1, deleted: 1 },
+      (err, Objectives) => {
         // Check if error was found or not
         if (err) {
           res.json({ success: false, message: err }); // Return error message
         } else {
           // Check if blogs were found in database
-          if (!department || department.length === 0) {
+          if (!Objectives || Objectives.length === 0) {
             res.json({
               success: false,
-              message: "No Department found.",
-              department: [],
+              message: "No Objectives found.",
+              Objectives: [],
             }); // Return error of no blogs found
           } else {
-            res.json({ success: true, department: department }); // Return success and blogs array
+            res.json({ success: true, Objectives: Objectives }); // Return success and blogs array
           }
         }
       }
     ).sort({ _id: -1 }); // Sort blogs from newest to oldest
   });
 
-  router.post("/findDepartmentById", (req, res) => {
-    Department.findOne(
+  router.post("/findObjectivesById", (req, res) => {
+    Objectives.findOne(
       { id: req.body.id },
       "-deleted -__v",
-      function (err, department) {
+      function (err, Objectives) {
         if (err) {
-          res.json({ success: false, message: "Department not found" });
+          res.json({ success: false, message: "Objectives not found" });
         } else {
           // Check if blogs were found in database
-          if (!department) {
-            res.json({ success: false, message: "No Department found." });
+          if (!Objectives) {
+            res.json({ success: false, message: "No Objectives found." });
           } else {
-            res.json({ success: true, department: department });
+            res.json({ success: true, Objectives: Objectives });
           }
         }
       }
     );
   });
 
-  router.post("/addDepartment", (req, res) => {
-    const { department } = req.body;
-    if (!department) {
+  router.post("/addObjectives", (req, res) => {
+    console.log("addObjectives", req.body);
+
+    const objectivesData = req.body;
+
+    if (!objectivesData) {
       return res.json({
         success: false,
-        message: "You must provide an Department Name",
+        message: "You must provide an Objectives and Action Plan Information",
       });
     }
 
-    const departmentData = {
+    const ObjectivesDataRequest = {
       id: uuidv4(),
-      department: req.body.department.toLowerCase(),
+      ...objectivesData,
     };
 
-    Department.create(departmentData)
+    // console.log("ObjectivesDataRequest", ObjectivesDataRequest);
+    // res.json({ success: true, ObjectivesDataRequest });
+    Objectives.create(ObjectivesDataRequest)
       .then((data) =>
         res.json({
           success: true,
-          message: "This department is successfully Added ",
-          data: { department: data.department },
+          message:
+            "This  Objectives and Action Plan Objectives is successfully Added ",
+          data: { Objectives: data.Objectives },
         })
       )
       .catch((err) => {
         if (err.code === 11000) {
           res.json({
             success: false,
-            message: "Department Name already exists ",
+            message:
+              " Objectives and Action Plan Objectives Name already exists ",
             err: err.message,
           });
         } else if (err.errors) {
@@ -82,16 +89,18 @@ module.exports = (router) => {
         } else {
           res.json({
             success: false,
-            message: "Could not add department Error : " + err.message,
+            message:
+              "Could not add  Objectives and Action Plan Error : " +
+              err.message,
           });
         }
       });
   });
 
-  router.put("/deleteDepartment", (req, res) => {
+  router.put("/deleteObjectives", (req, res) => {
     let data = req.body;
 
-    Department.deleteOne(
+    Objectives.deleteOne(
       {
         id: data.id,
       },
@@ -100,12 +109,12 @@ module.exports = (router) => {
         if (err) {
           res.json({
             success: false,
-            message: "Could not Delete Department" + err,
+            message: "Could not Delete Objectives" + err,
           });
         } else {
           res.json({
             success: true,
-            message: " Successfully Deleted the Department",
+            message: " Successfully Deleted the Objectives",
             data: results,
           });
         }
@@ -113,16 +122,16 @@ module.exports = (router) => {
     );
   });
 
-  router.put("/setInactiveDepartment", (req, res) => {
+  router.put("/setInactiveObjectives", (req, res) => {
     let data = req.body;
 
-    Department.findOne(
+    Objectives.findOne(
       {
         id: data.id,
       },
       (err) => {
         if (err) throw err;
-        Department.findOneAndUpdate(
+        Objectives.findOneAndUpdate(
           { id: data.id },
           { deleted: true, status: "inactive" },
           { upsert: true, select: "-__v" },
@@ -131,13 +140,13 @@ module.exports = (router) => {
             if (response) {
               res.json({
                 success: true,
-                message: " Successfully Delete Department",
+                message: " Successfully Delete Objectives",
                 data: response,
               });
             } else {
               res.json({
                 success: false,
-                message: "Could Delete Department" + err,
+                message: "Could Delete Objectives" + err,
               });
             }
           }
@@ -146,17 +155,17 @@ module.exports = (router) => {
     );
   });
 
-  router.put("/changeDepartmentStatus", (req, res) => {
+  router.put("/changeObjectivesStatus", (req, res) => {
     let data = req.body;
-    Department.findOne(
+    Objectives.findOne(
       {
         id: data.id,
       },
-      (err, department) => {
+      (err, Objectives) => {
         if (err) throw err;
-        Department.findOneAndUpdate(
+        Objectives.findOneAndUpdate(
           { id: data.id },
-          { status: department.status === "active" ? "inactive" : "active" },
+          { status: Objectives.status === "active" ? "inactive" : "active" },
           { upsert: true, select: "-__v" },
           (err, response) => {
             if (err) return res.json({ success: false, message: err.message });
@@ -168,7 +177,7 @@ module.exports = (router) => {
             } else {
               res.json({
                 success: true,
-                message: " Successfully Department set Status",
+                message: " Successfully Objectives set Status",
                 data: response,
               });
             }
@@ -178,29 +187,29 @@ module.exports = (router) => {
     );
   });
 
-  router.put("/updateDepartment", async (req, res) => {
-    let { id, department } = req.body;
+  router.put("/updateObjectives", async (req, res) => {
+    let { id, Objectives } = req.body;
 
-    let departmentData = {
-      department: department,
+    let ObjectivesData = {
+      Objectives: Objectives,
     };
 
-    Department.findOneAndUpdate(
+    Objectives.findOneAndUpdate(
       { id: id },
-      departmentData,
+      ObjectivesData,
       { new: true },
       (err, response) => {
         if (err) return res.json({ success: false, message: err.message });
         if (response) {
           res.json({
             success: true,
-            message: "Department Information has been updated!",
+            message: "Objectives Information has been updated!",
             data: response,
           });
         } else {
           res.json({
             success: true,
-            message: "No Department has been modified!",
+            message: "No Objectives has been modified!",
             data: response,
           });
         }

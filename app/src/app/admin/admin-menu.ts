@@ -2,19 +2,37 @@ import { NbMenuItem } from "@nebular/theme";
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: "Dashboard",
-    icon: "activity-outline",
-    link: "/admin/dashboard",
-    home: true,
+    title: "Dashboard Monitoring",
+    icon: { icon: "list-alt", pack: "fa" },
+    children: [
+      {
+        title: "Dashboard",
+        icon: { icon: "list", pack: "fa" },
+        link: "/admin/dashboard",
+      },
+      {
+        title: "Goals",
+        icon: { icon: "bullseye", pack: "fa" },
+        link: "/admin/objectives",
+      },
+      {
+        title: "Research",
+        icon: { icon: "search-location", pack: "fa" },
+        link: "/admin/research",
+      },
+    ],
   },
   {
     title: "Users",
-    icon: "person-outline",
+    icon: { icon: "user-cog", pack: "fa" },
     link: "/admin/users",
   },
-  {
-    title: "Objectives",
-    icon: "calendar-outline",
-    link: "/admin/objectives",
-  },
 ];
+
+/*
+
+link: "/admin/dashboard",
+    home: true,
+
+    <i class="fab fa-searchengin"></i>
+*/

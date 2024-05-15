@@ -11,6 +11,7 @@ import { UserService } from "../../@core/services/user.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { CustomerService } from "../../@core/services/customer.service";
+import { DepartmentService } from "../../@core/services/department.service";
 
 @Component({
   selector: "ngx-common",
@@ -27,7 +28,8 @@ export class CommonComponent implements OnInit, OnDestroy {
   public frontEnddata;
   public username;
   public anyVariable;
-
+  DepartmentData: any;
+  passedData: any;
   public id;
   public data;
   public model;
@@ -38,7 +40,8 @@ export class CommonComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     public user: UserService,
     public customer: CustomerService,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private DepartmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {}
@@ -59,6 +62,21 @@ export class CommonComponent implements OnInit, OnDestroy {
         .subscribe((data: any) => {
           this.passEntry.emit(data);
           this.activeModal.close();
+        });
+    } else if (this.model && this.model === "department") {
+      this.DepartmentService.getRoute(
+        this.DepartmentData.endpoint,
+        this.DepartmentData.model,
+        this.DepartmentData.apiName,
+        this.passedData
+      )
+        .pipe(takeUntil(this.getSubscription))
+        .subscribe((data: any) => {
+          // { acknowledged: true, deletedCount: 1
+          console.log(data);
+          data.success
+            ? [this.passEntry.emit(data), this.activeModal.close()]
+            : this.passEntry.emit(data);
         });
     } else {
       this.logout();

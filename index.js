@@ -15,6 +15,8 @@ const authentication = require("./routes/authentication")(router);
 const users = require("./routes/users")(router);
 const file = require("./routes/fileupload")(router);
 const department = require("./routes/department")(router);
+const goals = require("./routes/goals")(router);
+const objectives = require("./routes/objectives")(router);
 
 mongoose.Promise = global.Promise;
 
@@ -59,6 +61,8 @@ app.use("/authentication", authentication);
 app.use("/users", users);
 app.use("/fileupload", file);
 app.use("/department", department);
+app.use("/objectives", objectives);
+app.use("/goals", goals);
 app.use(
   "/profile_pic",
   express.static(path.join(__dirname, "../uploads/images"))
