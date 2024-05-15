@@ -1,0 +1,69 @@
+<nb-card>
+  <nb-card-header> {{ action | titlecase }} Goal </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form" (submit)="executeAction(form)">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="inputFirstName" class="label">Goal</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="inputFirstName"
+              [status]="
+                form?.get('goals').touched &&
+                form.controls['goals'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Goal"
+              formControlName="goals"
+            />
+          </div>
+          <div class="form-group">
+            <label for="inputFirstName" class="label">Budget</label>
+            <input
+              type="number"
+              nbInput
+              fullWidth
+              id="inputFirstName"
+              [status]="
+                form?.get('budget').touched &&
+                form.controls['budget'].errors?.required
+                  ? 'danger'
+                  : ''
+              "
+              placeholder="Budget"
+              formControlName="budget"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button
+            type="submit"
+            nbButton
+            [status]="buttonStatus"
+            [nbSpinner]="loadingMediumGroup"
+            nbSpinnerSize="tiny"
+            outline
+          >
+            {{ buttonTxt | titlecase }}
+          </button>
+          &nbsp;
+          <button
+            type="button"
+            nbButton
+            status="danger"
+            (click)="closeModal()"
+            outline
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

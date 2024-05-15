@@ -1,4 +1,4 @@
-const Objectives = require("../models/objectives"); // Import Objectives Model Schema
+const Objectives = require("../models/objective");
 const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
 
@@ -48,24 +48,30 @@ module.exports = (router) => {
   });
 
   router.post("/addObjectives", (req, res) => {
-    const { Objectives } = req.body;
-    if (!Objectives) {
+    console.log("addObjectives", req.body);
+
+    const objectivesData = req.body;
+
+    if (!objectivesData) {
       return res.json({
         success: false,
-        message: "You must provide an Objectives Name",
+        message: "You must provide an Objectives and Action Plan Information",
       });
     }
 
-    const ObjectivesData = {
+    const ObjectivesDataRequest = {
       id: uuidv4(),
-      Objectives: req.body.Objectives.toLowerCase(),
+      ...objectivesData,
     };
 
-    Objectives.create(ObjectivesData)
+    // console.log("ObjectivesDataRequest", ObjectivesDataRequest);
+    // res.json({ success: true, ObjectivesDataRequest });
+    Objectives.create(ObjectivesDataRequest)
       .then((data) =>
         res.json({
           success: true,
-          message: "This Objectives is successfully Added ",
+          message:
+            "This  Objectives and Action Plan Objectives is successfully Added ",
           data: { Objectives: data.Objectives },
         })
       )
@@ -73,7 +79,8 @@ module.exports = (router) => {
         if (err.code === 11000) {
           res.json({
             success: false,
-            message: "Objectives Name already exists ",
+            message:
+              " Objectives and Action Plan Objectives Name already exists ",
             err: err.message,
           });
         } else if (err.errors) {
@@ -82,7 +89,9 @@ module.exports = (router) => {
         } else {
           res.json({
             success: false,
-            message: "Could not add Objectives Error : " + err.message,
+            message:
+              "Could not add  Objectives and Action Plan Error : " +
+              err.message,
           });
         }
       });

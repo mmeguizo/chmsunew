@@ -73,28 +73,41 @@ export class LoginComponent implements OnInit {
     };
 
     // Function to send login data to API
-    this.authService.login(user).subscribe((token: any) => {
-      //Check if response was a success or error
-      if (!token.success) {
+    this.authService.login(user).subscribe(
+      (token: any) => {
+        //Check if response was a success or error
+        if (!token.success) {
+          this.authService.makeToast(
+            "danger",
+            "Failed Logging in",
+            token.message
+          );
+          this.processing = false; // Enable submit button
+          this.enableForm(); // Enable form for editting
+        } else {
+          let decoded = jwt_decode<UserToken>(token.token);
+          this.authService.makeToast("success", "Success", token.message);
+          this.authService.storeUserData(token.token, decoded);
+          if (this.authService.CurrentlyloggedIn()) {
+            this.authService.loggingIn(decoded.role);
+          } else {
+            this.authService.logout();
+            this.router.navigate(["login"]); // Navigate to dashboard view
+          }
+        }
+      },
+      (error) => {
+        // Handle the error here
+        console.error(error);
         this.authService.makeToast(
           "danger",
-          "Failed Logging in",
-          token.message
+          "Network Error",
+          "Service Unavailable"
         );
         this.processing = false; // Enable submit button
         this.enableForm(); // Enable form for editting
-      } else {
-        let decoded = jwt_decode<UserToken>(token.token);
-        this.authService.makeToast("success", "Success", token.message);
-        this.authService.storeUserData(token.token, decoded);
-        if (this.authService.CurrentlyloggedIn()) {
-          this.authService.loggingIn(decoded.role);
-        } else {
-          this.authService.logout();
-          this.router.navigate(["login"]); // Navigate to dashboard view
-        }
       }
-    });
+    );
   }
 
   register() {

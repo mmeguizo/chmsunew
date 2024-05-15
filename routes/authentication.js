@@ -104,7 +104,50 @@ module.exports = (router) => {
     }
   });
 
-  //login
+  //old login connections login without network down response
+
+  // router.post("/login", (req, res) => {
+  //   const { username, password } = req.body;
+  //   if (!username)
+  //     return res.json({ success: false, message: "No Username was provided" });
+  //   if (!password)
+  //     return res.json({ success: false, message: "No password was provided" });
+
+  //   User.findOne({ username: username.toLowerCase() }, async (err, user) => {
+  //     if (err) return res.json({ success: false, message: err.message });
+  //     if (!user) return res.json({ success: false, message: "User Not Found" });
+  //     if (user.status === "pending")
+  //       return res.json({ success: false, message: "Account Still Pending" });
+  //     if (user.status === "inactive")
+  //       return res.json({
+  //         success: false,
+  //         message: "Your account is inactive",
+  //       });
+  //     if (await comparePassword(req.body.password, user.password)) {
+  //       //remove _id andpassword from the entries
+  //       let newUser = user.toObject();
+  //       delete newUser.password;
+  //       delete newUser._id;
+  //       delete newUser.__v;
+
+  //       const token = jwt.sign(newUser, config.secret, {
+  //         expiresIn: "24h",
+  //       });
+  //       res.json({
+  //         success: true,
+  //         message: "Password is Correct",
+  //         token: token,
+  //       });
+  //     } else {
+  //       res.json({
+  //         success: false,
+  //         message: "Password is incorrect",
+  //       });
+  //     }
+  //   });
+  // });
+
+  // new login with network down response
   router.post("/login", (req, res) => {
     const { username, password } = req.body;
     if (!username)
@@ -112,38 +155,46 @@ module.exports = (router) => {
     if (!password)
       return res.json({ success: false, message: "No password was provided" });
 
-    User.findOne({ username: username.toLowerCase() }, async (err, user) => {
-      if (err) return res.json({ success: false, message: err.message });
-      if (!user) return res.json({ success: false, message: "User Not Found" });
-      if (user.status === "pending")
-        return res.json({ success: false, message: "Account Still Pending" });
-      if (user.status === "inactive")
-        return res.json({
-          success: false,
-          message: "Your account is inactive",
-        });
-      if (await comparePassword(req.body.password, user.password)) {
-        //remove _id andpassword from the entries
-        let newUser = user.toObject();
-        delete newUser.password;
-        delete newUser._id;
-        delete newUser.__v;
+    User.findOne({ username: username.toLowerCase() })
+      .then(async (user) => {
+        if (!user)
+          return res.json({ success: false, message: "User Not Found" });
+        if (user.status === "pending")
+          return res.json({ success: false, message: "Account Still Pending" });
+        if (user.status === "inactive")
+          return res.json({
+            success: false,
+            message: "Your account is inactive",
+          });
+        if (await comparePassword(req.body.password, user.password)) {
+          //remove _id andpassword from the entries
+          let newUser = user.toObject();
+          delete newUser.password;
+          delete newUser._id;
+          delete newUser.__v;
 
-        const token = jwt.sign(newUser, config.secret, {
-          expiresIn: "24h",
-        });
-        res.json({
-          success: true,
-          message: "Password is Correct",
-          token: token,
-        });
-      } else {
+          const token = jwt.sign(newUser, config.secret, {
+            expiresIn: "24h",
+          });
+          res.json({
+            success: true,
+            message: "Password is Correct",
+            token: token,
+          });
+        } else {
+          res.json({
+            success: false,
+            message: "Password is incorrect",
+          });
+        }
+      })
+      .catch((err) => {
+        // This will catch any network errors
         res.json({
           success: false,
-          message: "Password is incorrect",
+          message: "Unable to connect to the server. Please try again later.",
         });
-      }
-    });
+      });
   });
 
   /*

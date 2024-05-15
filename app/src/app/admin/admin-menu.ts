@@ -11,8 +11,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: "/admin/dashboard",
       },
       {
-        title: "Objectives",
-        icon: { icon: "object-group", pack: "fa" },
+        title: "Goals",
+        icon: { icon: "bullseye", pack: "fa" },
         link: "/admin/objectives",
       },
       {
