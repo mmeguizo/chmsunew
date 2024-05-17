@@ -96,7 +96,7 @@ export class UsersModalComponent implements OnInit {
 
   getUser(id) {
     this.user
-      .getRoute(this.userData.endpoint, this.userData.apiName, { id: id })
+      .getRoute("post", this.userData.model, "findById", { id: id })
       .pipe(takeUntil(this.getSubscription))
       .subscribe((data: any) => {
         this.selected = data.user.department;
@@ -144,8 +144,9 @@ export class UsersModalComponent implements OnInit {
     this.form.value.id = this.userData.id || "";
     this.user
       .getRoute(
-        this.userData.endpoint2 || this.userData.endpoint,
-        this.userData.apiName2 || this.userData.apiName,
+        this.userData.endpoint,
+        this.userData.model,
+        this.userData.apiName,
         this.form.value
       )
       .pipe(takeUntil(this.getSubscription))

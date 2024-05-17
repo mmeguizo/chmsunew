@@ -33,31 +33,21 @@ export class UserService {
     this.authToken = token;
   }
 
-  getRoute(endpoint: any, apiName: any, data: any) {
-    console.log("getRoute", { endpoint, apiName, data });
-
+  getRoute(endpoint: any, model?: any, apiName?: any, data?: any) {
     this.createAuthenticationHeaders();
-    if (endpoint == "put") {
-      return this.http.put(this.cs.domain + `/users/${apiName}`, data, {
-        headers: this.options,
-      });
-    } else if (endpoint == "post") {
-      if (apiName == "register") {
-        return this.http.post(
-          this.cs.domain + `/authentication/register`,
-          data
-        );
-      }
-      return this.http.post(this.cs.domain + `/users/${apiName}`, data, {
-        headers: this.options,
-      });
-    } else {
-      return this.http.get(this.cs.domain + `/users/${apiName}/` + data, {
-        headers: this.options,
-      });
-    }
-  }
+    let url = `${this.cs.domain}/${model}/${apiName}`;
 
+    if (endpoint === "get" && apiName === "profile") {
+      url = `${this.cs.domain}/${model}/${apiName}/${data}`;
+    }
+
+    const requestConfig = {
+      body: data,
+      headers: this.options,
+    };
+
+    return this.http.request(endpoint, url, requestConfig);
+  }
   getAllUsers() {
     this.createAuthenticationHeaders();
     return this.http.get(this.cs.domain + "/users/getAllUser", {
@@ -78,3 +68,18 @@ export class UserService {
     });
   }
 }
+
+/*
+ getRoute(endpoint: any, model?: any, apiName?: any, data?: any) {
+    console.log("getRoute", { endpoint, model, apiName, data });
+    this.createAuthenticationHeaders();
+    let url = `${this.cs.domain}/${model}/${apiName}`;
+    if (endpoint == "get" && apiName === "profile") {
+      url = `${this.cs.domain}/${model}/${apiName}/${data}`;
+    }
+    return this.http.request(endpoint, url, {
+      body: data,
+      headers: this.options,
+    });
+  }
+*/

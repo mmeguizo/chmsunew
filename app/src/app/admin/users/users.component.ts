@@ -53,7 +53,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getAllUsersInitially() {
     this.user
-      .getAllUsers()
+      .getRoute("get", "users", "getAllUsers")
       .pipe(takeUntil(this.getUserSubscription))
       .subscribe((data: any) => {
         this.data = data.user;
@@ -77,7 +77,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     activeModal.componentInstance.userData = {
       endpoint: "post",
       apiName: "addUser",
-      model: "user",
+      model: "users",
     };
     //
     activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {
@@ -114,10 +114,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     activeModal.componentInstance.action = "update";
     activeModal.componentInstance.updateUser = true;
     activeModal.componentInstance.userData = {
-      endpoint: "post",
-      apiName: "findById",
-      apiName2: "updateUser",
-      endpoint2: "put",
+      apiName: "updateUser",
+      model: "users",
+      endpoint: "put",
       id: data.id,
       _id: data._id,
       data: data,
@@ -151,11 +150,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     activeModal.componentInstance.username = person.username;
     activeModal.componentInstance.id = person.id;
     activeModal.componentInstance.frontEnddata = person;
-    activeModal.componentInstance.model = "user";
-    activeModal.componentInstance.endpointType = "put";
+    activeModal.componentInstance.model = "users";
+    activeModal.componentInstance.endpoint = "put";
     activeModal.componentInstance.apiName = "setInactiveUser";
     activeModal.componentInstance.headerTitle = "Delete User";
     activeModal.componentInstance.bodyContent = "Deleting";
+    activeModal.componentInstance.userData = "Deleting";
     activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {
       receivedEntry.success
         ? [
@@ -185,12 +185,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     activeModal.componentInstance.username = person.username;
     activeModal.componentInstance.id = person.id;
     activeModal.componentInstance.frontEnddata = person;
-    activeModal.componentInstance.model = "user";
+    activeModal.componentInstance.model = "users";
+    activeModal.componentInstance.endpoint = "put";
     activeModal.componentInstance.endpointType = "put";
     activeModal.componentInstance.apiName = "changeUserStatus";
     activeModal.componentInstance.headerTitle = "Status Change";
     activeModal.componentInstance.bodyContent = "Changing Status of";
-    activeModal.componentInstance.passEntry.subscribe((receivedEntry) => {
+    activeModal.componentInstance.passEntry.subscribe((receivedEntry: any) => {
       receivedEntry && [
         this.auth.makeToast(
           "success",

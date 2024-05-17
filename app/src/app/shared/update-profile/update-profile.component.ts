@@ -12,7 +12,6 @@ import { UserService } from "../../@core/services/user.service";
 import { FileService } from "../../@core/services/file.service";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { setTimeout } from "timers";
 
 @Component({
   selector: "ngx-update-profile",
@@ -71,9 +70,11 @@ export class UpdateProfileComponent implements OnInit {
 
   getUser() {
     this.user
-      .getRoute("get", "profile", this.id)
+      .getRoute("get", "users", "profile", this.id)
       .pipe(takeUntil(this.getSubscription))
       .subscribe((data: any) => {
+        console.log(data);
+
         this.form = this.formBuilder.group({
           username: [data.user.username, [Validators.required]],
           email: [data.user.email, [Validators.required]],
@@ -144,7 +145,7 @@ export class UpdateProfileComponent implements OnInit {
     form.value.profile_pic = this.profile_pic;
     let data = form.value;
     this.user
-      .getRoute("put", "updateProfile", data)
+      .getRoute("put", "users", "updateProfile", data)
       .pipe(takeUntil(this.getSubscription))
       .subscribe((data: any) => {
         if (data.success) {

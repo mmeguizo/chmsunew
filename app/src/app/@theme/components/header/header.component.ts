@@ -74,7 +74,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentTheme = this.themeService.currentTheme;
+    this.currentTheme = this.themeService.currentTheme || "default";
 
     this.menuService.onItemClick().subscribe((event) => {
       //boolean content init will stop the subscribed data from multiplying which cause incremental event

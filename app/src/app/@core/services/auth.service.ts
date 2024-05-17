@@ -143,7 +143,7 @@ export class AuthService {
   }
 
   // Function to login user
-  login(user) {
+  login(user?: any) {
     return this.http.post(this.domain + "/authentication/login", user).pipe(
       catchError((error: HttpErrorResponse) => {
         console.log(error);

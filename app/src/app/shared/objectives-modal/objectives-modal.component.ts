@@ -8,64 +8,72 @@ import {
 } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "../../@core/services/auth.service";
-import { UserService } from "../../@core/services/user.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { CustomerService } from "../../@core/services/customer.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { DepartmentService } from "../../@core/services/department.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { addDocumentComponent } from "../add-document-modal/add-document.component";
 import { CommonComponent } from "../common/common.component";
+import { ObjectiveService } from "../../@core/services/objective.service";
 
 @Component({
-  selector: "ngx-department",
-  templateUrl: "./department.component.html",
-  styleUrls: ["./department.component.scss"],
+  selector: "ngx-objectives-modal",
+  templateUrl: "./objectives-modal.component.html",
+  styleUrls: ["./objectives-modal.component.scss"],
 })
-export class DepartmentComponent implements OnInit, OnDestroy {
+export class ObjectivesModalComponent implements OnInit, OnDestroy {
   @Output() passEntry: EventEmitter<string> = new EventEmitter<string>();
   @Input() modalService: NgbModal;
 
-  displayedColumns: string[] = ["#", "department", "options"];
+  displayedColumns: string[] = [
+    "#",
+    "functional_objective",
+    "performance_indicator",
+    "target",
+    "formula",
+    "programs",
+    "department",
+    "responsible_persons",
+    "clients",
+    "timetable",
+    "frequency_monitoring",
+    "data_source",
+    "budget",
+    "createdAt",
+    "options",
+  ];
 
   private getSubscription = new Subject<void>();
 
-  public headerTitle: string;
-  public bodyContent: string;
-
-  public frontEnddata;
-  public username: string;
-  public anyVariable: string;
-
   public id: string;
-  public data;
+  public data: any;
   public model: string;
-  public apiName: string;
-  public endpointType: string;
   loading: boolean = true;
   dataSource: any;
   constructor(
     public auth: AuthService,
     public activeModal: NgbActiveModal,
+    public objective: ObjectiveService,
     public ngbModal: NgbModal,
     private DepartmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
     console.log("department component");
-    this.getAllDept();
+    this.getAllObjectives(this.id);
   }
 
-  getAllDept() {
-    this.DepartmentService.getRoute("get", "department", "getAllDepartment")
+  getAllObjectives(id: any) {
+    console.log("getAllObjectivesid", id);
+
+    this.objective
+      .getRoute("get", "objectives", `getAllByIdObjectives/${id}`)
       .pipe(takeUntil(this.getSubscription))
       .subscribe((data: any) => {
-        console.log({ getAllDept: data });
-        this.dataSource = new MatTableDataSource(data.department);
+        this.data = data.Objectives;
+        this.dataSource = new MatTableDataSource(data.Objectives);
         this.loading = false;
-        // this.passEntry.emit(data);
-        // this.activeModal.close();
       });
   }
 
@@ -102,7 +110,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
               `Adding ${receivedEntry.data?.department}`,
               receivedEntry.message
             ),
-            this.getAllDept(),
+            // this.getAllDept(),
           ]
         : [
             this.auth.makeToast(
@@ -144,7 +152,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
               `Adding ${receivedEntry.data?.department}`,
               receivedEntry.message
             ),
-            this.getAllDept(),
+            // this.getAllDept(),
           ]
         : [
             this.auth.makeToast(
@@ -184,7 +192,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
               "Deleting Success",
               `Done Deleting ${receivedEntry.data}`
             ),
-            this.getAllDept(),
+            // this.getAllDept(),
           ]
         : [
             this.auth.makeToast(
@@ -196,15 +204,3 @@ export class DepartmentComponent implements OnInit, OnDestroy {
     });
   }
 }
-
-/*
-
-this.DepartmentService
-      .getRoute(this.endpointType, this.apiName, this.frontEnddata)
-      .pipe(takeUntil(this.getSubscription))
-      .subscribe((data: any) => {
-        this.passEntry.emit(data);
-        this.activeModal.close();
-      });
-
-*/
