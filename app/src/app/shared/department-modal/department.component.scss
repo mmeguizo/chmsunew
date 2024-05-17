@@ -12,15 +12,6 @@
   margin-bottom: 0px !important;
 }
 
-@import "~@nebular/theme/styles/theming";
-@import "~@nebular/theme/styles/themes";
-
-@include nb-install-component() {
-  .table.mat-table.cdk-table.mat-elevation-z8 {
-    background: nb-theme(color-bg);
-  }
-}
-
 span.input-group-text {
   background-color: #00d68f;
   color: #fff;

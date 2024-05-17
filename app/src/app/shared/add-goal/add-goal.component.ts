@@ -32,7 +32,8 @@ export class addGoalComponent implements OnInit {
   public passedData: any;
   public updateGoal: Boolean;
   loadingMediumGroup = false;
-  private createBy: string = "";
+  private createdBy: string = "";
+  updatedBy: string;
   constructor(
     public auth: AuthService,
     public user: UserService,
@@ -41,12 +42,15 @@ export class addGoalComponent implements OnInit {
     public formBuilder: FormBuilder,
     public ngbModal: NgbModal,
     public department_modal: DepartmentComponent,
-    private documentService: DepartmentService,
-    private goalService: GoalService
+    private documentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
-    this.createBy = this.auth.getTokenUserID();
+    this.createdBy = this.auth.getTokenUserID();
+    this.updatedBy = this.auth.getTokenUserID();
+    console.log(this.createdBy);
+    console.log(this.updatedBy);
+
     console.log("add document component", this.goalData);
     console.log("add document component", this.passedData);
     console.log("add document component", this.updateGoal);
@@ -72,10 +76,12 @@ export class addGoalComponent implements OnInit {
     // this.form.value.id = this.passedData ? this.passedData.id : null;
 
     //if update is true then createBy and id will be passed to updateGoal
-    this.updateGoal && [
-      (this.form.value.createdBy = this.createBy),
-      (this.form.value.id = this.passedData?.id),
-    ];
+    this.updateGoal
+      ? [
+          (this.form.value.updatedBy = this.updatedBy),
+          (this.form.value.id = this.passedData?.id),
+        ]
+      : [(this.form.value.createdBy = this.createdBy)];
 
     console.log(this.form.value);
 

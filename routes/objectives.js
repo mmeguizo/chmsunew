@@ -1,29 +1,49 @@
 const Objectives = require("../models/objective");
 const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
+const objective = require("../models/objective");
 
 module.exports = (router) => {
   router.get("/getAllObjectives", (req, res) => {
     // Search database for all blog posts
+    Objectives.find({ deleted: false }, (err, Objectives) => {
+      // Check if error was found or not
+      console.log("getAllObjectives", Objectives);
+
+      if (err) {
+        return res.status(500).json({ success: false, message: err });
+      }
+
+      if (!Objectives || Objectives.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No Objectives found.",
+          Objectives: [],
+        });
+      }
+      return res.status(200).json({ success: true, Objectives });
+    }).sort({ _id: -1 }); // Sort blogs from newest to oldest
+  });
+  router.get("/getAllByIdObjectives/:id", (req, res) => {
+    // Search database for all blog posts
     Objectives.find(
-      { deleted: false },
-      { id: 1, Objectives: 1, status: 1, deleted: 1 },
+      { deleted: false, goalId: req.params.id },
       (err, Objectives) => {
         // Check if error was found or not
+        console.log("getAllObjectives", Objectives);
+
         if (err) {
-          res.json({ success: false, message: err }); // Return error message
-        } else {
-          // Check if blogs were found in database
-          if (!Objectives || Objectives.length === 0) {
-            res.json({
-              success: false,
-              message: "No Objectives found.",
-              Objectives: [],
-            }); // Return error of no blogs found
-          } else {
-            res.json({ success: true, Objectives: Objectives }); // Return success and blogs array
-          }
+          return res.status(500).json({ success: false, message: err });
         }
+
+        if (!Objectives || Objectives.length === 0) {
+          return res.status(404).json({
+            success: false,
+            message: "No Objectives found.",
+            Objectives: [],
+          });
+        }
+        return res.status(200).json({ success: true, Objectives });
       }
     ).sort({ _id: -1 }); // Sort blogs from newest to oldest
   });

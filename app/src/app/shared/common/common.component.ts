@@ -12,6 +12,7 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { CustomerService } from "../../@core/services/customer.service";
 import { DepartmentService } from "../../@core/services/department.service";
+import { GoalService } from "../../@core/services/goal.service";
 
 @Component({
   selector: "ngx-common",
@@ -22,64 +23,49 @@ export class CommonComponent implements OnInit, OnDestroy {
   @Output() passEntry: EventEmitter<string> = new EventEmitter<string>();
   private getSubscription = new Subject<void>();
 
-  public headerTitle;
-  public bodyContent;
+  public headerTitle: string;
+  public bodyContent: string;
 
-  public frontEnddata;
-  public username;
-  public anyVariable;
+  public frontEnddata: any;
+  public username: string;
+  public anyVariable: any;
   DepartmentData: any;
   passedData: any;
-  public id;
-  public data;
-  public model;
-  public apiName;
-  public endpointType;
+  public id: any;
+  public data: any;
+  public model: string;
+  public apiName: string;
+  public endpoint: string;
+  public startUrl: string;
 
   constructor(
     public auth: AuthService,
-    public user: UserService,
+    public users: UserService,
     public customer: CustomerService,
     public activeModal: NgbActiveModal,
-    private DepartmentService: DepartmentService
+    private goal: GoalService,
+    private department: DepartmentService
   ) {}
 
   ngOnInit(): void {}
 
   runQuery() {
-    if (this.model && this.model === "user") {
-      this.user
-        .getRoute(this.endpointType, this.apiName, this.frontEnddata)
+    if (this.model) {
+      const routeService =
+        this.model === "users"
+          ? this.users
+          : this.model === "department"
+          ? this.department
+          : this.goal;
+      routeService
+        .getRoute(this.endpoint, this.model, this.apiName, this.frontEnddata)
         .pipe(takeUntil(this.getSubscription))
         .subscribe((data: any) => {
           this.passEntry.emit(data);
           this.activeModal.close();
-        });
-    } else if (this.model && this.model === "fileupload") {
-      this.user
-        .getRoute(this.endpointType, this.apiName, this.frontEnddata)
-        .pipe(takeUntil(this.getSubscription))
-        .subscribe((data: any) => {
-          this.passEntry.emit(data);
-          this.activeModal.close();
-        });
-    } else if (this.model && this.model === "department") {
-      this.DepartmentService.getRoute(
-        this.DepartmentData.endpoint,
-        this.DepartmentData.model,
-        this.DepartmentData.apiName,
-        this.passedData
-      )
-        .pipe(takeUntil(this.getSubscription))
-        .subscribe((data: any) => {
-          // { acknowledged: true, deletedCount: 1
-          console.log(data);
-          data.success
-            ? [this.passEntry.emit(data), this.activeModal.close()]
-            : this.passEntry.emit(data);
         });
     } else {
-      this.logout();
+      this.auth.logout();
     }
   }
 

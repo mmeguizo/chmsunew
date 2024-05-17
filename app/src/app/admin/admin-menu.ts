@@ -28,11 +28,3 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: "/admin/users",
   },
 ];
-
-/*
-
-link: "/admin/dashboard",
-    home: true,
-
-    <i class="fab fa-searchengin"></i>
-*/

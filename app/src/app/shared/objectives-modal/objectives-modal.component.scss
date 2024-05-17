@@ -1,5 +1,16 @@
-@import "~@nebular/theme/styles/theming";
-@import "~@nebular/theme/styles/themes";
+.col-lg-12 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}
+
+::ng-deep .nb-theme-dark nb-card {
+  margin-bottom: 0px !important;
+}
+::ng-deep .nb-theme-cosmic nb-card {
+  margin-bottom: 0px !important;
+}
 
 span.input-group-text {
   background-color: #00d68f;
@@ -62,7 +73,12 @@ i#button-alignment {
   cursor: pointer;
 }
 
-#addGoal {
+#addUser {
+  cursor: pointer;
+  color: #00d68f;
+  width: 80%;
+}
+.closeObjectiveModal {
   cursor: pointer;
   color: #00d68f;
   width: 80%;
@@ -72,11 +88,11 @@ i#button-alignment {
   display: flex;
 }
 
-#updateGoal {
+#updateUser {
   cursor: pointer;
   color: #ffaa00;
 }
-#deleteGoal {
+#deleteUser {
   cursor: pointer;
   color: #ff3d71;
 }
@@ -179,21 +195,14 @@ i#button-alignment {
 /* Structure */
 table {
   width: 100%;
+  table-layout: fixed;
+}
+
+td {
+  word-wrap: break-word;
 }
 
 .mat-form-field {
   font-size: 14px;
   width: 100%;
-}
-#goalName {
-  position: relative;
-  transition: all 0.3s ease-in-out;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#goalName:hover {
-  transform: translateY(-5px);
-  text-decoration: underline;
-  color: lightgreen;
 }

@@ -6,6 +6,7 @@ module.exports = (router) => {
   router.get("/getAllGoals", (req, res) => {
     Goals.aggregate(
       [
+        { $match: { deleted: false } }, // Filter by delete:false status
         {
           $lookup: {
             as: "users",
@@ -229,16 +230,14 @@ module.exports = (router) => {
 
   router.put("/updateGoals", async (req, res) => {
     let data = req.body;
-    console.log("updateGoals", data);
+    data.updateDate = new Date().toISOString();
     Goals.findOneAndUpdate(
       { id: data.id },
       data,
       { new: true },
       (err, response) => {
         if (err) return res.json({ success: false, message: err.message });
-
         console.log("updateGoals", response);
-
         if (response) {
           res.json({
             success: true,

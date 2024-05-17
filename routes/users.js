@@ -7,7 +7,7 @@ let bcrypt = require("bcryptjs");
 const ObjectId = mongoose.Types.ObjectId;
 
 module.exports = (router) => {
-  router.get("/getAllUser", (req, res) => {
+  router.get("/getAllUsers", (req, res) => {
     // Search database for all blog posts
     User.find(
       { deleted: false },

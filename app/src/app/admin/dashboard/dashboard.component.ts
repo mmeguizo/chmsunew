@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit {
 
   getAllUsers() {
     this.user
-      .getAllUsers()
+      .getRoute("get", "users", "getAllUsers")
       .pipe(takeUntil(this.getSubscription))
       .subscribe((data: any) => {
         this.userData = data.user.length;
@@ -144,9 +144,31 @@ export class DashboardComponent implements OnInit {
   setDashboard(dashboardCard: any, type: string) {
     this.commonStatusCardsSet.push(dashboardCard);
     this.statusCardsByThemes = {
+      // default: this.commonStatusCardsSet,
+      // cosmic: [],
+      // corporate: [],
+      // dark: this.commonStatusCardsSet,
+
       default: this.commonStatusCardsSet,
-      cosmic: [],
-      corporate: [],
+      cosmic: this.commonStatusCardsSet,
+      corporate: [
+        {
+          ...this.lightCard,
+          type: "warning",
+          // },
+          // {
+          //   ...this.rollerShadesCard,
+          //   type: "primary",
+          // },
+          // {
+          //   ...this.wirelessAudioCard,
+          //   type: "danger",
+          // },
+          // {
+          //   ...this.coffeeMakerCard,
+          //   type: "info",
+        },
+      ],
       dark: this.commonStatusCardsSet,
     };
   }

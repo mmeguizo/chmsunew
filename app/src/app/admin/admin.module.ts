@@ -45,6 +45,7 @@ import { DepartmentComponent } from "../shared/department-modal/department.compo
 import { addDocumentComponent } from "../shared/add-document-modal/add-document.component";
 import { ResearchComponent } from "./research/research.component";
 import { addGoalComponent } from "../shared/add-goal/add-goal.component";
+import { ObjectivesModalComponent } from "../shared/objectives-modal/objectives-modal.component";
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -101,6 +102,7 @@ const NB_MODULES = [
     StatusCardComponent,
     ObjectivesComponent,
     DepartmentComponent,
+    ObjectivesModalComponent,
     ResearchComponent,
   ],
   entryComponents: [
@@ -109,6 +111,7 @@ const NB_MODULES = [
     addGoalComponent,
     addDocumentComponent,
     DepartmentComponent,
+    ObjectivesModalComponent,
     CustomerModalComponent,
     FilesComponent,
     UploadsComponent,
@@ -118,12 +121,12 @@ const NB_MODULES = [
     UsersModalComponent,
     addGoalComponent,
     addDocumentComponent,
+    ObjectivesModalComponent,
     DepartmentComponent,
     UpdateProfileComponent,
     CustomerModalComponent,
     FilesComponent,
     UploadsComponent,
-    DepartmentComponent,
   ],
 })
 export class AdminModule {}

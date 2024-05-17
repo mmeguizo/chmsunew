@@ -30,20 +30,30 @@ export class GoalService {
     this.authToken = token;
   }
 
-  getRoute(endpoint: string, model: string, apiName: string, data?: any) {
+  getRoute(endpoint: any, model?: any, apiName?: any, data?: any) {
+    console.log("getRoute", { endpoint, model, apiName, data });
     this.createAuthenticationHeaders();
-    const requestOptions = {
-      headers: this.options,
-    };
-
     const url = `${this.cs.domain}/${model}/${apiName}`;
-    switch (endpoint) {
-      case "put":
-        return this.http.put(url, data, requestOptions);
-      case "post":
-        return this.http.post(url, data, requestOptions);
-      default:
-        return this.http.get(url, requestOptions);
-    }
+    return this.http.request(endpoint, url, {
+      body: data,
+      headers: this.options,
+    });
   }
+
+  // getRoute(endpoint: string, model: string, apiName: string, data?: any) {
+  //   this.createAuthenticationHeaders();
+  //   const requestOptions = {
+  //     headers: this.options,
+  //   };
+
+  //   const url = `${this.cs.domain}/${model}/${apiName}`;
+  //   switch (endpoint) {
+  //     case "put":
+  //       return this.http.put(url, data, requestOptions);
+  //     case "post":
+  //       return this.http.post(url, data, requestOptions);
+  //     default:
+  //       return this.http.get(url, requestOptions);
+  //   }
+  // }
 }
